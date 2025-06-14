@@ -1,0 +1,615 @@
+import React, { useEffect, useState, useRef } from "react";
+import heroImage from "../assets/here-imge.png";
+import SummaryApi from "../common/SummaryApi";
+import Axios from "../utils/Axios";
+import {
+  FaSwimmingPool,
+  FaDumbbell,
+  FaSnowflake,
+  FaWifi,
+  FaParking,
+  FaDog,
+  FaFireExtinguisher,
+  FaUsers,
+  FaWalking,
+} from "react-icons/fa";
+import { IoCallSharp } from "react-icons/io5";
+import { FaElevator } from "react-icons/fa6";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { GiPlantRoots, GiWaterDrop, GiSolarPower } from "react-icons/gi";
+import {
+  MdTheaters,
+  MdKitchen,
+  MdHotTub,
+  MdOutlineSecurity,
+  MdPower,
+  MdChildCare,
+  MdDeck,
+} from "react-icons/md";
+import { FaAngleRight } from "react-icons/fa";
+import BookingBar from "../components/BookingBar";
+import BookingForm from "../components/BookingForm";
+import { cardData, whySection } from "../store/Dropdown";
+import { useNavigate } from "react-router-dom";
+import why_choose from "../assets/why_main.png";
+import AnimatedTestimonialsDemo from "../components/AnimatedTestimonialsDemo";
+const Hello = () => {
+  const [villadata, setVillaData] = useState([]);
+  const [bookingParams, setBookingParams] = useState({
+    location: "",
+    roomType: "",
+    person: 1,
+    checkIn: "",
+    checkOut: "",
+  });
+  const iconMap = {
+    FaSwimmingPool: <FaSwimmingPool size={28} className="text-primary-400" />,
+    GiPlantRoots: <GiPlantRoots size={28} className="text-primary-400" />,
+    FaDumbbell: <FaDumbbell size={28} className="text-primary-400" />,
+    MdTheaters: <MdTheaters size={28} className="text-primary-400" />,
+    MdKitchen: <MdKitchen size={28} className="text-primary-400" />,
+    FaSnowflake: <FaSnowflake size={28} className="text-primary-400" />,
+    FaWifi: <FaWifi size={28} className="text-primary-400" />,
+    MdOutlineSecurity: (
+      <MdOutlineSecurity size={28} className="text-primary-400" />
+    ),
+    MdPower: <MdPower size={28} className="text-primary-400" />,
+    FaParking: <FaParking size={28} className="text-primary-400" />,
+    MdChildCare: <MdChildCare size={28} className="text-primary-400" />,
+    FaDog: <FaDog size={28} className="text-primary-400" />,
+    MdDeck: <MdDeck size={28} className="text-primary-400" />,
+    MdHotTub: <MdHotTub size={28} className="text-primary-400" />,
+    GiWaterDrop: <GiWaterDrop size={28} className="text-primary-400" />,
+    GiSolarPower: <GiSolarPower size={28} className="text-primary-400" />,
+    FaFireExtinguisher: (
+      <FaFireExtinguisher size={28} className="text-primary-400" />
+    ),
+    FaElevator: <FaElevator size={28} className="text-primary-400" />,
+    FaUsers: <FaUsers size={28} className="text-primary-400" />,
+    FaWalking: <FaWalking size={28} className="text-primary-400" />,
+  };
+  const [openPopup, setOpenPopup] = useState(false);
+  const containerRef = useRef();
+  const navigate = useNavigate();
+  const handleOpenBooking = () => setOpenPopup(true);
+
+  const villafet = async () => {
+    try {
+      const response = await Axios({
+        ...SummaryApi.getVilla,
+      });
+      const { data: ResponseData } = response;
+
+      if (ResponseData.success) {
+        setVillaData(ResponseData.data);
+      }
+
+      console.log("Fetched Villa Data:", ResponseData.data);
+    } catch (error) {
+      console.error("Failed to fetch villas:", error.message || error);
+    }
+  };
+  useEffect(() => {
+    villafet();
+  }, []);
+  const handleScrollLeft = () => {
+    containerRef.current.scrollBy({ left: -200, behavior: "smooth" });
+  };
+  const handleScrollRight = () => {
+    containerRef.current.scrollBy({ left: 200, behavior: "smooth" });
+  };
+  return (
+    <div>
+      <div className="flex flex-col gap-16">
+        <section>
+          <div className="hero_section">
+            <div className="flex items-start md:flex-row flex-col md:gap-6 md:px-0 px-6 lg:gap-10 h-full w-full">
+              <div className="w-full h-full md:flex flex-col justify-between hidden ">
+                <div className="flex w-full justify-end">
+                  <div className="flex flex-col gap-4">
+                    <p className="text-white text-sm">
+                      Find your perfect villa experience — curated and brought
+                      to your <br /> screen.
+                    </p>
+                    <div className="w-20 h-2 bg-secondary-200"></div>
+                  </div>
+                </div>
+                <div>
+                  <img src={heroImage} alt="heroimage" className="w-[600px]" />
+                </div>
+              </div>
+              <div className="w-full flex flex-col gap-8">
+                <div>
+                  <div>
+                    <h1 className="text-[54px] lg:text-[64px] font-bold text-white">
+                      LONAVALA
+                    </h1>
+                    <h1 className="text-[54px] lg:text-[64px] font-bold text-white">
+                      STAY-VILLA
+                    </h1>
+                  </div>
+                  <p className="text-white text-sm">
+                    Step into a world of elegance, comfort, and visual
+                    inspiration. Explore <br /> handpicked villas from stunning
+                    locations, crafted for those who appreciate <br /> the art
+                    of living well.
+                  </p>
+                </div>
+                <div className="flex justify-end md:justify-start">
+                  {villadata.length > 0 && (
+                    <div className="flex items-center gap-4 bg-[#727B94] w-fit px-4 py-3 rounded-xl">
+                      <img
+                        src={villadata[0].coverImage}
+                        alt={villadata[0].villaTitle}
+                        className="w-[130px] h-[100px] object-cover rounded-xl"
+                      />
+                      <div className="flex flex-col gap-2">
+                        <h2 className="text-sm font-semibold text-white">
+                          Check our latest <br /> property
+                        </h2>
+                        <a
+                          href={`/VillaDetails/${villadata[0]._id}`}
+                          className="text-white hover:text-secondary-200 flex items-center gap-1"
+                        >
+                          Learn More <FaAngleRight />
+                        </a>{" "}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="here_letest_villa">
+            <div className="">
+              <BookingBar
+                data={villadata}
+                bookingParams={bookingParams}
+                setBookingParams={setBookingParams}
+                onBook={handleOpenBooking}
+              />
+              {openPopup && (
+                <BookingForm
+                  bookingParams={bookingParams}
+                  villadata={villadata}
+                  onClose={() => setOpenPopup(false)}
+                />
+              )}
+            </div>
+            <div className="px-4 sm:px-10 md:px-0">
+              {villadata.length > 0 && (
+                <div className="container mx-auto max-w-3xl flex md:flex-row flex-col items-start gap-6 md:gap-10">
+                  <div className="here_letest_img">
+                    <img
+                      src={villadata[0].coverImage}
+                      alt={villadata[0].villaTitle}
+                    />
+                  </div>
+                  <div className="w-full flex flex-col gap-6">
+                    <h6 className="font-semibold text-sm text-secondary-200">
+                      ABOUT US
+                    </h6>
+                    <div className="flex flex-col gap-4">
+                      <h1 className="text-3xl font-bold text-white">
+                        {villadata[0].villaTitle}
+                      </h1>
+                      <p className="text-sm  font-normal text-white">
+                        {villadata[0].description
+                          ? villadata[0].description
+                              .split(" ")
+                              .slice(0, 30)
+                              .join(" ") + "..."
+                          : ""}
+                      </p>
+                    </div>
+                    <a
+                      href={`/VillaDetails/${villadata[0]._id}`}
+                      className="w-fit bg-secondary-200 py-2 px-4 rounded-full text-sm font-semibold"
+                    >
+                      Learn Mote
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+        <section className="luxury_section">
+          <div className="luxury_card_section">
+            <div className="flex flex-col gap-8">
+              <div className="flex flex-col gap-4 justify-center items-center">
+                <h1 className="text-3xl font-bold text-white">
+                  Luxurious Rooms
+                </h1>
+                <div>
+                  <div className="w-[100px] h-2 bg-white"></div>
+                </div>
+                <p className="text-white text-sm opacity-90">
+                  Showcasing the finest spaces crafted for elegance and peace.
+                </p>
+              </div>
+              <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+                {cardData.map((card, i) => (
+                  <div
+                    kay={i}
+                    className="flex flex-col gap-2 bg-white rounded p-4"
+                  >
+                    <div className="w-[100%] object-cover relative">
+                      <img
+                        src={card.image}
+                        alt={card.label}
+                        className="w-[100%] h-[200px] rounded"
+                      />
+                      <p className="absolute top-2 right-2 text-white font-semibold py-2 px-4 bg-primary-400">
+                        Luxury Rooms
+                      </p>
+                    </div>
+                    <p>{card.label}</p>
+                  </div>
+                ))}{" "}
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="container mx-auto px-4 md:px-10 lg:px-20  flex flex-col gap-10">
+          <div className="flex justify-center flex-col gap-2 items-center">
+            <h6 className="font-semibold text-sm text-primary-400">
+              Our Villas
+            </h6>
+            <h2 className="text-3xl font-bold text-primary-400">Our Villas</h2>
+          </div>
+
+          {villadata.length === 0 ? (
+            <p>No villas available to display.</p>
+          ) : (
+            <div className="w-full flex flex-col gap-7 overflow-hidden">
+              <div
+                ref={containerRef}
+                className="flex gap-4 overflow-x-auto scroll-smooth w-full snap-x snap-mandatory flex-nowrap hide-scrollbar"
+              >
+                {villadata.map((villa) => (
+                  <div
+                    key={villa._id}
+                    className="min-w-full h-full snap-start border p-6 bg-white rounded-md flex flex-col md:flex-row gap-4 md:gap-6"
+                  >
+                    <div className="flex flex-col gap-4 w-full">
+                      <div className="w-full h-[200px] md:h-[300px] ">
+                        <img
+                          src={
+                            villa.coverImage ||
+                            "https://via.placeholder.com/500x300?text=No+Image"
+                          }
+                          alt={villa.villaTitle || "No Title"}
+                          className="w-full h-full object-cover rounded-md"
+                        />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <strong>Avalable on :</strong>
+                        <h4 className="text-green-700 text-md font-semibold">
+                          {" "}
+                          {villa.availableDate}
+                        </h4>
+                      </div>
+                    </div>
+                    <div className="w-full flex flex-col gap-2 md:gap-4">
+                      <h2 className="text-xl font-semibold ">
+                        {villa.villaTitle
+                          ? villa.villaTitle.split(" ").slice(0, 5).join(" ") +
+                            "..."
+                          : "N/A"}
+                      </h2>
+                      <p className="text-md text-gray-600">
+                        {villa.description
+                          ? villa.description
+                              .split(" ")
+                              .slice(0, 20)
+                              .join(" ") + "..."
+                          : "No description provided."}
+                      </p>
+                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                        <p className="flex flex-col gap-1">
+                          <strong>Price/Night:</strong> ₹
+                          {villa.pricePerNight || "N/A"}
+                        </p>
+                        <p className="flex flex-col gap-1">
+                          <strong>Capacity:</strong> {villa.capacity || "N/A"}
+                        </p>
+                        <p className="flex flex-col gap-1">
+                          <strong>Bedrooms:</strong>{" "}
+                          {villa.numberOfBedrooms || "N/A"}
+                        </p>
+                        <p className="flex flex-col gap-1">
+                          <strong>Bathrooms:</strong>{" "}
+                          {villa.numberOfBathrooms || "N/A"}
+                        </p>
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <strong>Amenities:</strong>{" "}
+                        <div className="grid grid-cols-2 lg:grid-cols-3 items-conter gap-4">
+                          {villa.aminities && villa.aminities.length > 0
+                            ? villa.aminities.slice(0, 3).map((item, idx) => (
+                                <span
+                                  key={idx}
+                                  className="text-sm bg-body-bg_body-color px-2 py-1 rounded flex flex-col gap-1 items-center"
+                                >
+                                  {iconMap[item.icon] || null}
+                                  {item.label}
+                                </span>
+                              ))
+                            : "N/A"}{" "}
+                        </div>
+                      </div>
+                      <div className="flex gap-4 items-center justify-end">
+                        <button
+                          className=" py-1 px-4  hover:text-black  hover:bg-secondary-500  bg-primary-400 text-sm rounded-full text-white font-semibold"
+                          onClick={() =>
+                            navigate(`/VillaDetails/${villadata[0]._id}`)
+                          }
+                        >
+                          View
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="hidden lg:flex w-full justify-end gap-4 ">
+                <button
+                  onClick={handleScrollLeft}
+                  className="bg-primary-400 hover:bg-secondary-200 text-white hover:text-black  p-2 rounded-full shadow-md"
+                >
+                  <IoIosArrowBack size={24} />
+                </button>
+                <button
+                  onClick={handleScrollRight}
+                  className="bg-primary-400 hover:bg-secondary-200 text-white hover:text-black p-2 rounded-full shadow-md"
+                >
+                  <IoIosArrowForward size={24} />
+                </button>
+              </div>
+            </div>
+          )}
+        </section>
+        <section>
+          <div className="container mx-auto lg:px-20 md:px-10 px-4 flex flex-col lg:flex-row gap-4">
+            <div className="Luxury_section">
+              <div className="flex md:flex-row flex-col items-end gap-8 px-4 md:px-12 py-6 md:py-11 bg-gradient-to-b from-[#001B1D]/10 via-[#001B1D]/90 to-[#001B1D] h-full rounded-3xl">
+                <div className="w-full flex flex-col gap-4">
+                  <h6 className="text-gray-200 text-sm">United Kingdom</h6>
+                  <div>
+                    <h1 className="text-4xl font-bold text-white ">
+                      Authentic
+                    </h1>
+                    <h1 className="text-4xl font-bold text-white ">
+                      House in Nature
+                    </h1>
+                  </div>
+                  <p className="text-gray-200 text-md">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Phasellus malesuada neque sed pellentesque ullamcorper.
+                  </p>
+                </div>
+                <div className="w-full ">
+                  <div className="flex flex-col gap-6 bg-[#fff]/10 p-10 rounded-xl backdrop-blur-md text-white shadow-lg w-full">
+                    <h3 className="flex items-center gap-2">
+                      <IoCallSharp size={24} /> +1 (123) 456-7890
+                    </h3>
+                    <h1 className="text-xl font-semibold text-white">
+                      Unit Detail
+                    </h1>
+                    <div className="flex justify-between text-sm">
+                      <div className="flex flex-col gap-1">
+                        <h6 className="text-gray-300">Size</h6>
+                        <h4 className="text-lg">250 M²</h4>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <h6 className="text-gray-300">Room</h6>
+                        <h4 className="text-lg">4 Rooms</h4>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <h6 className="text-gray-300">Bathroom</h6>
+                        <h4 className="text-lg">2 Bathrooms</h4>
+                      </div>
+                    </div>
+                    <button className="w-fit py-2 px-6 rounded-full bg-cyan-400 text-sm font-bold text-black hover:bg-cyan-300 transition">
+                      Go to Details
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="container mx-auto px-4 md:px-10 lg:px-20  flex flex-col gap-10">
+          <div className="flex flex-col gap-11 md:px-8 px-4">
+            <div className="flex md:flex-row flex-col items-start gap-10">
+              <div>
+                <img src={why_choose} alt={why_choose} />
+              </div>
+              <div className="flex flex-col gap-4">
+                <h6 className="font-semibold text-sm text-primary-400">
+                  WHY CHOOSE US
+                </h6>
+                <div>
+                  <h1 className="text-primary-400 lg:text-5xl md:text-3xl text-2xl font-bold">
+                    You Will Get the Best
+                  </h1>
+                  <h1 className="text-primary-400 lg:text-5xl md:text-3xl text-2xl font-bold">
+                    Villa Experience
+                  </h1>
+                </div>
+                <p className="text-primary-400 text-lg">
+                  From architectural wonders to peaceful surroundings, we ensure
+                  your villa journey is not just beautiful — it's unforgettable.
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {whySection.map((why, i) => (
+                <div
+                  kay={i}
+                  className="bg-white py-6 px-8 flex flex-col items-center text-center gap-2 rounded-[16px]"
+                >
+                  <img src={why.image} alt={why.label} className="w-16" />
+                  <p>{why.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+        <section>
+          <AnimatedTestimonialsDemo />
+        </section>
+      </div>
+    </div>
+  );
+};
+
+export default Hello;
+// import React, { useEffect, useState } from "react";
+// import heroImage from "../assets/here-imge.png";
+// import SummaryApi from "../common/SummaryApi";
+// import Axios from "../utils/Axios";
+// import { FaAngleRight } from "react-icons/fa";
+// import BookingBar from "../components/BookingBar";
+// const Hello = () => {
+//   const [villadata, setVillaData] = useState([]);
+//   const [bookingParams, setBookingParams] = useState({
+//     location: "",
+//     roomType: "",
+//     person: 1,
+//     checkIn: "",
+//     checkOut: "",
+//   });
+//   const [openPopup, setOpenPopup] = useState(false);
+
+//   const handleOpenBooking =() => setOpenPopup(true);
+//   const villafet = async () => {
+//     try {
+//       const response = await Axios({
+//         ...SummaryApi.getVilla,
+//       });
+//       const { data: ResponseData } = response;
+
+//       if (ResponseData.success) {
+//         setVillaData(ResponseData.data);
+//       }
+
+//       console.log("Fetched Villa Data:", ResponseData.data);
+//     } catch (error) {
+//       console.error("Failed to fetch villas:", error.message || error);
+//     }
+//   };
+//   useEffect(() => {
+//     villafet();
+//   }, []);
+//   return (
+//     <div>
+//       <div>
+//         <section>
+//           <div className="hero_section">
+//             <div className="flex items-start gap-10 h-full w-full">
+//               <div className="w-full h-full flex flex-col justify-between">
+//                 <div className="flex w-full justify-end">
+//                   <div className="flex flex-col gap-4">
+//                     <p className="text-white text-sm">
+//                       Find your perfect villa experience — curated and brought
+//                       to your <br /> screen.
+//                     </p>
+//                     <div className="w-20 h-2 bg-secondary-200"></div>
+//                   </div>
+//                 </div>
+//                 <div>
+//                   <img src={heroImage} alt="heroimage" className="w-[600px]" />
+//                 </div>
+//               </div>
+//               <div className="w-full flex flex-col gap-8">
+//                 <div>
+//                   <div>
+//                     <h1 className="text-[64px] font-bold text-white">
+//                       LONAVALA
+//                     </h1>
+//                     <h1 className="text-[64px] font-bold text-white">
+//                       STAY-VILLA
+//                     </h1>
+//                   </div>
+//                   <p className="text-white text-sm">
+//                     Step into a world of elegance, comfort, and visual
+//                     inspiration. Explore <br /> handpicked villas from stunning
+//                     locations, crafted for those who appreciate <br /> the art
+//                     of living well.
+//                   </p>
+//                 </div>
+//                 <div>
+//                   {villadata.length > 0 && (
+//                     <div className="flex items-center gap-4 bg-[#727B94] w-fit px-4 py-3 rounded-xl">
+//                       <img
+//                         src={villadata[0].coverImage}
+//                         alt={villadata[0].villaTitle}
+//                         className="w-[130px] h-[100px] object-cover rounded-xl"
+//                       />
+//                       <div className="flex flex-col gap-2">
+//                         <h2 className="text-sm font-semibold text-white">
+//                           Check our latest <br /> property
+//                         </h2>
+//                         <a
+//                           href={`/VillaDetails/${villadata[0]._id}`}
+//                           className="text-white hover:text-secondary-200 flex items-center gap-1"
+//                         >
+//                           Learn More <FaAngleRight />
+//                         </a>{" "}
+//                       </div>
+//                     </div>
+//                   )}
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//           <div className="here_letest_villa">
+//             <div className="">
+//               <BookingBar data={villadata} />
+//             </div>
+//             <div className="">
+//               {villadata.length > 0 && (
+//                 <div className="container mx-auto max-w-3xl flex items-start gap-10">
+//                   <div className="here_letest_img">
+//                     <img
+//                       src={villadata[0].coverImage}
+//                       alt={villadata[0].villaTitle}
+//                     />
+//                   </div>
+//                   <div className="w-full flex flex-col gap-6">
+//                     <h6 className="font-semibold text-sm text-secondary-200">
+//                       ABOUT US
+//                     </h6>
+//                     <div className="flex flex-col gap-4">
+//                       <h1 className="text-3xl font-bold text-white">
+//                         {villadata[0].villaTitle}
+//                       </h1>
+//                       <p className="text-sm  font-normal text-white">
+//                         {villadata[0].description
+//                           ? villadata[0].description
+//                               .split(" ")
+//                               .slice(0, 30)
+//                               .join(" ") + "..."
+//                           : ""}
+//                       </p>
+//                     </div>
+//                     <a
+//                       href={`/VillaDetails/${villadata[0]._id}`}
+//                       className="w-fit bg-secondary-200 py-2 px-4 rounded-full text-sm font-semibold"
+//                     >
+//                       Learn Mote
+//                     </a>
+//                   </div>
+//                 </div>
+//               )}
+//             </div>
+//           </div>
+//         </section>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Hello;

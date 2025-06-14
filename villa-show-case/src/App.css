@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+  --primary-200: #001B1D;
+  --primary-300: #002B36;
+  --primary-400: #014D4E;
+  --secondary-200: #45EDFA;
+  --secondary-300: #2FE5DA;
+  --secondary-400: #6CEEFF;
+  --secondary-500: #38F2E6;
+  --Lavender: #C1C5D0;
+
+  --primary-100: #006B74;
+  --body-bg: #EBF5F5;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background: var(--body-bg);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+.hero_section {
+  background-image: url(./assets/here_bg.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 88vh;
+  padding: 40px 0px 0px 0px;
+}
+
+.here_letest_villa {
+  background: var(--primary-200);
+  width: 100%;
+  height: 100%;
+  padding: 0px 4px 64px 4px;
+  border-radius: 0% 0% 52% 48% / 0% 0% 16% 16%;
+  display: flex;
+  flex-direction: column;
+  gap: 84px;
+}
+
+.here_letest_img {
+  /* background: #00A2FF; */
+  width: 100%;
+  height: 100%;
+}
+
+.here_letest_img img {
+  width: 100%;
+  height: 100%;
+  object-fit: scale-down;
+  border-radius: 0% 32% 0% 32% / 0% 32% 0% 32%;
+}
+
+.luxury_section {
+  padding: 0px 80px;
+
+}
+
+.luxury_card_section {
+  background-image: url(./assets/luxury_bg.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 32px;
+  width: 100%;
+  padding: 32px 48px;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.Luxury_section {
+  background-image: url(./assets/villa_show_case.png);
+  background-size: cover;
+  background-position: contain;
+  background-repeat: no-repeat;
+  border-radius: 32px;
+  width: 100%;
+  height: 90vh;
+}
+
+@media screen and (max-width: 768px) {
+  .here_letest_villa {
+    padding: 0px 4px 64px 4px;
+    border-radius: 0% 0% 52% 48% / 0% 0% 10% 10%;
+  }
+
+  .luxury_section {
+    padding: 32px 50px;
+  }
+
+  .luxury_card_section {
+    padding: 24px 32px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .luxury_section {
+    padding: 24px 20px;
+  }
+
+  .luxury_card_section {
+    padding: 24px;
+  }
+}
