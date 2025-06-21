@@ -9,9 +9,14 @@ const testimonialSchema = new mongoose.Schema(
     },
     imageUrl: {
       type: String,
-      required: true, // assuming image will be uploaded via Cloudinary or similar
+      required: true,
     },
-    message: {
+    quote: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    designation: {
       type: String,
       required: true,
       trim: true,

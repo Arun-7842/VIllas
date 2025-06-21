@@ -25,7 +25,7 @@ import {
   MdChildCare,
   MdDeck,
 } from "react-icons/md";
-const VillaDetails = () => {
+const VillaDetailsForUser = () => {
   const { id } = useParams();
   const [villa, setVilla] = useState(null);
   const containerRef = useRef();
@@ -80,8 +80,8 @@ const VillaDetails = () => {
     containerRef.current.scrollBy({ left: 400, behavior: "smooth" });
   };
   return (
-    <section>
-      <div className="flex flex-col md:gap-8 gap-4 ">
+    <section className="container mx-auto lg:px-20 md:px-10 px-4 py-6">
+      <div className="flex flex-col md:gap-8 gap-4">
         {/* Display Villa Images */}
         <div className="relative w-full ">
           <div
@@ -249,4 +249,4 @@ const VillaDetails = () => {
   );
 };
 
-export default VillaDetails;
+export default VillaDetailsForUser;

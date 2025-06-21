@@ -50,7 +50,7 @@ const AdminRegistration = () => {
           password: "",
           confirmPassword: "",
         });
-        navigate("/admin-login");
+        navigate("/login");
       }
       console.log("response", response.data);
     } catch (error) {
@@ -161,7 +161,7 @@ const AdminRegistration = () => {
         <p>
           Already you have an account?{" "}
           <Link
-            to={"/admin-login"}
+            to={"/login"}
             className="text-green-700 font-semibold text hover:text-green-900"
           >
             Login

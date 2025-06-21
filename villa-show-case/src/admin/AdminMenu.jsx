@@ -39,14 +39,14 @@ const AdminMenu = () => {
       name: "Bookings",
     },
     {
-      icon: <IoTicket size={24} />,
-      path: "/dashboard/Inquirie",
-      name: "Inquiries",
-    },
-    {
       icon: <MdAddPhotoAlternate size={24} />,
       path: "/dashboard/Add-testimonials",
       name: "Add Testimonials",
+    },
+    {
+      icon: <MdAddPhotoAlternate size={24} />,
+      path: "/dashboard/testimonials",
+      name: "Testimonials",
     },
   ];
 
@@ -62,7 +62,7 @@ const AdminMenu = () => {
         localStorage.clear();
         toast.success(response?.data?.message);
         window.dispatchEvent(new Event("userLogin"));
-        navigate("/admin-login");
+        navigate("/login");
       }
     } catch (error) {
       AxiosToastError(error);

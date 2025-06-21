@@ -72,7 +72,6 @@ export const userRegistrationController = async (req, res) => {
     });
   }
 };
-
 export const userLoginController = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -312,7 +311,8 @@ export const updateUserProfileController = async (req, res) => {
 export const addToWishlistController = async (req, res) => {
   const { userId } = req.params;
   const { itemId } = req.body; // Villa or Product ID
-
+  console.log("User ID:", userId);
+  console.log("Item ID:", itemId);
   try {
     const user = await userModel.findById(userId);
     if (!user) {

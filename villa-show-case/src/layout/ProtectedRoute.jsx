@@ -8,7 +8,7 @@ const ProtectedRoute = ({ children, requiredRole = "Admin" }) => {
         
   // Check if user is logged in
   if (!admin || !admin.role || !admin._id) {
-    return <Navigate to="/admin-login" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   // Check if user has required role
@@ -18,7 +18,7 @@ const ProtectedRoute = ({ children, requiredRole = "Admin" }) => {
 
   // Check if token exists
   if (!admin.refresh_token) {
-    return <Navigate to="/admin-login" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return children;

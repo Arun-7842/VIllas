@@ -18,7 +18,7 @@ const AdminPermission = ({ children }) => {
         setHasPermission(false);
         clearAdminStorage(); // Clear invalid data
         setIsLoading(false);
-        navigate("/admin-login", { replace: true });
+        navigate("/login", { replace: true });
         return;
       }
 
@@ -37,7 +37,7 @@ const AdminPermission = ({ children }) => {
         setHasPermission(false);
         clearAdminStorage();
         setIsLoading(false);
-        navigate("/admin-login", { replace: true });
+        navigate("/login", { replace: true });
         return;
       }
 

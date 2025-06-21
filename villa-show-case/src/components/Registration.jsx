@@ -62,12 +62,11 @@ const Registration = () => {
 
   return (
     <section className="container w-full mx-auto px-2">
-      <div className="bg-white my-4 w-full max-w-lg mx-auto rounded p-7">
+      <div className="bg-white my-4 w-full max-w-xl mx-auto rounded p-7">
         <p>Registration</p>
         <form className="grid gap-4 mt-6" onSubmit={handleSubmit}>
-          {/* //name */}
-          <div className="flex items-center gap-4">
-            <div className="grid gap-1">
+          <div className="flex items-center flex-col md:flex-row gap-4">
+            <div className="grid gap-1 w-full">
               <label htmlFor="firstName">First Name : </label>
               <input
                 type="text"
@@ -80,7 +79,7 @@ const Registration = () => {
                 placeholder="enter your first name"
               />
             </div>
-            <div className="grid gap-1">
+            <div className="grid gap-1 w-full">
               <label htmlFor="lastName">Last Name : </label>
               <input
                 type="text"
@@ -94,7 +93,6 @@ const Registration = () => {
               />
             </div>
           </div>
-          {/* //email */}
           <div className="grid gap-1">
             <label htmlFor="email">Email : </label>
             <input
@@ -108,7 +106,6 @@ const Registration = () => {
               placeholder="enter your email"
             />
           </div>
-          {/* //mobile */}
           <div className="grid gap-1">
             <label htmlFor="phone">Phone No. : </label>
             <input
@@ -122,9 +119,8 @@ const Registration = () => {
               placeholder="enter your phone"
             />
           </div>
-          <div className="flex items-center gap-4">
-            {/* //password */}
-            <div className="grid gap-1">
+          <div className="flex items-center flex-col md:flex-row gap-4">
+            <div className="grid gap-1 w-full">
               <label htmlFor="password">Password : </label>
               <div className="bg-blue-50 p-2 border rounded flex items-center justify-between focus-within:border-primary-200">
                 <input
@@ -145,8 +141,7 @@ const Registration = () => {
                 </div>{" "}
               </div>
             </div>
-            {/* //confirmPassword */}
-            <div className="grid gap-1">
+            <div className="grid gap-1 w-full">
               <label htmlFor="confirmPassword">Confirm password: </label>
               <div className="bg-blue-50 p-2 border rounded flex items-center justify-between focus-within:border-primary-200">
                 <input
@@ -172,7 +167,7 @@ const Registration = () => {
             disabled={!validvalue}
             className={`${
               validvalue
-                ? "bg-secondary-200 hover:bg-green-700"
+                ? "bg-secondary-200 hover:bg-primary-400"
                 : "bg-gray-500 "
             } text-white py-2 px-6 rounded font-semibold my-3 tracking-wide`}
           >
@@ -182,7 +177,7 @@ const Registration = () => {
         <p>
           Already you have an account?{" "}
           <Link
-            to={"/admin-login"}
+            to={"/login"}
             className="text-primary-200 font-semibold text "
           >
             Login

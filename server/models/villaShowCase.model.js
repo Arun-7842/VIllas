@@ -5,6 +5,7 @@ const categorySchema = new mongoose.Schema(
     villaTitle: {
       type: String,
       default: "",
+      required: true,
     },
     villaType: {
       type: [String],

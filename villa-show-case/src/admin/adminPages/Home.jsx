@@ -24,8 +24,10 @@ const Home = () => {
   const [dashboardData, setDashboardData] = useState({
     totalVillas: 0,
     totalUsers: 0,
-    growthRate: "0%",
     totalRevenue: "$0",
+    totalBookings: 0,
+    todaysBookings: 0,
+    recentBookings: [], // <-- add this
     monthlyData: [],
     villaTypeDistribution: [],
   });
@@ -117,41 +119,18 @@ const Home = () => {
     <section className="p-6 bg-gray-50 min-h-screen flex flex-col gap-8">
       <h1 className="text-3xl font-bold  text-gray-800">Admin Dashboard</h1>
 
-      {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white shadow-lg py-2 px-6 rounded-lg border-l-4 border-blue-500">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-semibold text-gray-700">
-                Total Villas
-              </h2>
-              <p className="text-3xl font-bold text-blue-600">
-                {dashboardData.totalVillas || 0}
-              </p>
-            </div>
-            <div className="text-blue-500">
-              <svg
-                className="w-12 h-12"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M10.707 2.293a1 1 0 00-1.414 0l-9 9a1 1 0 001.414 1.414L2 12.414V15a1 1 0 001 1h3a1 1 0 001-1v-3a1 1 0 011-1h2a1 1 0 011 1v3a1 1 0 001 1h3a1 1 0 001-1v-2.586l.293.293a1 1 0 001.414-1.414l-9-9z" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white shadow-lg py-2 px-6 rounded-lg border-l-4 border-green-500">
+        <div className="bg-white shadow-lg py-2 px-6 rounded-lg border-l-4 border-[#8FF4FC]">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold text-gray-700">
                 Total Users
               </h2>
-              <p className="text-3xl font-bold text-green-600">
+              <p className="text-3xl font-bold text-gray-700">
                 {dashboardData.totalUsers || 0}
               </p>
             </div>
-            <div className="text-green-500">
+            <div className="text-gray-400">
               <svg
                 className="w-12 h-12"
                 fill="currentColor"
@@ -162,44 +141,55 @@ const Home = () => {
             </div>
           </div>
         </div>
-
-        <div className="bg-white shadow-lg py-2 px-6 rounded-lg border-l-4 border-yellow-500">
+        <div className="bg-white shadow-lg py-2 px-6 rounded-lg border-l-4 border-[#6AF1FB]">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold text-gray-700">
-                Growth Rate
+                Total Villas
               </h2>
-              <p className="text-3xl font-bold text-yellow-600">
-                {dashboardData.growthRate || "0%"}
+              <p className="text-3xl font-bold text-gray-700">
+                {dashboardData.totalVillas || 0}
               </p>
             </div>
-            <div className="text-yellow-500">
+            <div className="text-gray-400">
               <svg
                 className="w-12 h-12"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
-                <path
-                  fillRule="evenodd"
-                  d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
+                <path d="M10.707 2.293a1 1 0 00-1.414 0l-9 9a1 1 0 001.414 1.414L2 12.414V15a1 1 0 001 1h3a1 1 0 001-1v-3a1 1 0 011-1h2a1 1 0 011 1v3a1 1 0 001 1h3a1 1 0 001-1v-2.586l.293.293a1 1 0 001.414-1.414l-9-9z" />
               </svg>
             </div>
           </div>
         </div>
-
-        <div className="bg-white shadow-lg py-2 px-6 rounded-lg border-l-4 border-purple-500">
+        <div className="bg-white shadow-lg py-2 px-6 rounded-lg border-l-4 border-[#45EDFA]">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-semibold text-gray-700">
-                Revenue
-              </h2>
-              <p className="text-3xl font-bold text-purple-600">
+              <h2 className="text-lg font-semibold text-gray-700">Bookings</h2>
+              <p className="text-3xl font-bold text-gray-800">
+                {dashboardData.totalBookings || 0}
+              </p>
+            </div>
+            <div className="text-gray-400">
+              <svg
+                className="w-12 h-12"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="M6 2a1 1 0 000 2h8a1 1 0 100-2H6zM4 6a2 2 0 00-2 2v7a2 2 0 002 2h12a2 2 0 002-2V8a2 2 0 00-2-2H4zm2 3h8a1 1 0 010 2H6a1 1 0 110-2z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white shadow-lg py-2 px-6 rounded-lg border-l-4 border-[#2A979F]">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-700">Revenue</h2>
+              <p className="text-3xl font-bold text-gray-700">
                 {dashboardData.totalRevenue || "$0"}
               </p>
             </div>
-            <div className="text-purple-500">
+            <div className="text-gray-400">
               <svg
                 className="w-12 h-12"
                 fill="currentColor"
@@ -229,7 +219,7 @@ const Home = () => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="count" fill="#3B82F6" radius={[1, 1, 0, 0]} />
+              <Bar dataKey="count" fill="#37C2CD" radius={[1, 1, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -339,9 +329,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Recent Activity Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Recent Bookings */}
         <div className="bg-white shadow-lg p-6 rounded-lg">
           <h3 className="text-xl font-semibold text-gray-800 mb-4">
             Recent Bookings
@@ -358,19 +346,19 @@ const Home = () => {
                   >
                     <div>
                       <p className="font-medium text-gray-800">
-                        {booking.villaName || "Villa"}
+                        {booking.villaSelected?.villaTitle || "Villa"}
                       </p>
                       <p className="text-sm text-gray-600">
-                        {booking.userName || "Guest"}
+                        {booking.name || "Guest"}
                       </p>
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-medium text-green-600">
-                        ${booking.amount || 0}
+                        ${booking.villaSelected?.pricePerNight || 0}
                       </p>
                       <p className="text-xs text-gray-500">
                         {booking.date
-                          ? new Date(booking.date).toLocaleDateString()
+                          ? new Date(booking?.date).toLocaleDateString()
                           : "Today"}
                       </p>
                     </div>
@@ -436,7 +424,7 @@ const Home = () => {
               <div className="flex items-center">
                 <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
                   <svg
-                    className="w-5 h-5 text-blue-600"
+                    className="w-5 h-5 text-[#2A979F]"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -448,7 +436,7 @@ const Home = () => {
                   <p className="text-sm text-gray-600">This month</p>
                 </div>
               </div>
-              <p className="text-lg font-bold text-blue-600">
+              <p className="text-lg font-bold text-[#2A979F]">
                 {dashboardData.activeUsers ||
                   Math.floor(dashboardData.totalUsers * 0.7)}
               </p>

@@ -4,7 +4,7 @@ import genereteAccessToken from "../utils/generetAccessToken.js";
 import generetRefreshToken from "../utils/generedRefreshToken.js";
 import VillaShowCase from "../models/villaShowCase.model.js";
 import userModel from "../models/user.model.js";
-
+import bookingModel from "../models/Booking.model.js";
 export const adminRegistrationController = async (req, res) => {
   try {
     const { name, email, mobile, password } = req.body;
@@ -165,7 +165,111 @@ export const getAdminDetalisController = async (req, res) => {
     });
   }
 };
+export const getAdminDashboardSummaryController = async (req, res) => {
+  try {
+    const currentDate = new Date();
 
+    const totalVillas = await VillaShowCase.countDocuments();
+    const totalUsers = await userModel.countDocuments();
+    const totalBookings = await bookingModel.countDocuments();
+
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(currentDate.getDate() - 30);
+
+    const recentVillas = await VillaShowCase.countDocuments({
+      createdAt: { $gte: thirtyDaysAgo },
+    });
+
+    const recentUsers = await userModel.countDocuments({
+      createdAt: { $gte: thirtyDaysAgo },
+    });
+
+    // const recentBookings = await bookingModel.countDocuments({
+    //   createdAt: { $gte: thirtyDaysAgo },
+    // });
+    const recentBookings = await bookingModel
+      .find({ createdAt: { $gte: thirtyDaysAgo } })
+      .sort({ createdAt: -1 }) // Most recent first
+      .limit(5)
+      .populate("name")
+      .populate("villaSelected");
+    // Monthly data (last 6 months)
+    const monthlyData = [];
+    for (let i = 5; i >= 0; i--) {
+      const startDate = new Date();
+      startDate.setMonth(currentDate.getMonth() - i);
+      startDate.setDate(1);
+      startDate.setHours(0, 0, 0, 0);
+
+      const endDate = new Date();
+      endDate.setMonth(currentDate.getMonth() - i + 1);
+      endDate.setDate(0);
+      endDate.setHours(23, 59, 59, 999);
+
+      const monthVillas = await VillaShowCase.countDocuments({
+        createdAt: { $gte: startDate, $lte: endDate },
+      });
+
+      const monthUsers = await userModel.countDocuments({
+        createdAt: { $gte: startDate, $lte: endDate },
+      });
+
+      const monthBookings = await bookingModel.countDocuments({
+        createdAt: { $gte: startDate, $lte: endDate },
+      });
+
+      monthlyData.push({
+        month: startDate.toLocaleDateString("en-US", { month: "short" }),
+        villas: monthVillas,
+        users: monthUsers,
+        bookings: monthBookings,
+        revenue: monthBookings * 1500, 
+        date: startDate,
+      });
+    }
+
+    const villaTypeDistribution = await VillaShowCase.aggregate([
+      {
+        $group: {
+          _id: "$villaType",
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { count: -1 } },
+    ]);
+
+    const totalRevenue = totalBookings * 1500;
+
+    return res.status(200).json({
+      success: true,
+      error: false,
+      data: {
+        totalVillas,
+        totalUsers,
+        totalBookings,
+        recentVillas,
+        recentUsers,
+        recentBookings,
+        totalRevenue,
+        monthlyData,
+        villaTypeDistribution,
+        summary: {
+          totalVillas,
+          totalUsers,
+          totalBookings,
+          totalRevenue: `₹${totalRevenue.toLocaleString()}`,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Dashboard Summary Error:", error);
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
 // export const getAdminDashboardSummaryController = async (req, res) => {
 //   try {
 //     const totalVillas = await VillaShowCase.countDocuments();
@@ -187,116 +291,116 @@ export const getAdminDetalisController = async (req, res) => {
 //     });
 //   }
 // };
-export const getAdminDashboardSummaryController = async (req, res) => {
-  try {
-    // Basic counts
-    const totalVillas = await VillaShowCase.countDocuments();
-    const totalUsers = await userModel.countDocuments();
+// export const getAdminDashboardSummaryController = async (req, res) => {
+//   try {
+//     // Basic counts
+//     const totalVillas = await VillaShowCase.countDocuments();
+//     const totalUsers = await userModel.countDocuments();
 
-    // Additional analytics data
-    const currentDate = new Date();
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
+//     // Additional analytics data
+//     const currentDate = new Date();
+//     const sixMonthsAgo = new Date();
+//     sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
 
-    // Monthly data for charts (last 6 months)
-    const monthlyData = [];
-    for (let i = 5; i >= 0; i--) {
-      const startDate = new Date();
-      startDate.setMonth(currentDate.getMonth() - i);
-      startDate.setDate(1);
-      startDate.setHours(0, 0, 0, 0);
+//     // Monthly data for charts (last 6 months)
+//     const monthlyData = [];
+//     for (let i = 5; i >= 0; i--) {
+//       const startDate = new Date();
+//       startDate.setMonth(currentDate.getMonth() - i);
+//       startDate.setDate(1);
+//       startDate.setHours(0, 0, 0, 0);
 
-      const endDate = new Date();
-      endDate.setMonth(currentDate.getMonth() - i + 1);
-      endDate.setDate(0);
-      endDate.setHours(23, 59, 59, 999);
+//       const endDate = new Date();
+//       endDate.setMonth(currentDate.getMonth() - i + 1);
+//       endDate.setDate(0);
+//       endDate.setHours(23, 59, 59, 999);
 
-      const monthVillas = await VillaShowCase.countDocuments({
-        createdAt: { $gte: startDate, $lte: endDate },
-      });
+//       const monthVillas = await VillaShowCase.countDocuments({
+//         createdAt: { $gte: startDate, $lte: endDate },
+//       });
 
-      const monthUsers = await userModel.countDocuments({
-        createdAt: { $gte: startDate, $lte: endDate },
-      });
+//       const monthUsers = await userModel.countDocuments({
+//         createdAt: { $gte: startDate, $lte: endDate },
+//       });
 
-      monthlyData.push({
-        month: startDate.toLocaleDateString("en-US", { month: "short" }),
-        villas: monthVillas,
-        users: monthUsers,
-        date: startDate,
-      });
-    }
+//       monthlyData.push({
+//         month: startDate.toLocaleDateString("en-US", { month: "short" }),
+//         villas: monthVillas,
+//         users: monthUsers,
+//         date: startDate,
+//       });
+//     }
 
-    // Recent activity (last 30 days)
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(currentDate.getDate() - 30);
+//     // Recent activity (last 30 days)
+//     const thirtyDaysAgo = new Date();
+//     thirtyDaysAgo.setDate(currentDate.getDate() - 30);
 
-    const recentVillas = await VillaShowCase.countDocuments({
-      createdAt: { $gte: thirtyDaysAgo },
-    });
+//     const recentVillas = await VillaShowCase.countDocuments({
+//       createdAt: { $gte: thirtyDaysAgo },
+//     });
 
-    const recentUsers = await userModel.countDocuments({
-      createdAt: { $gte: thirtyDaysAgo },
-    });
+//     const recentUsers = await userModel.countDocuments({
+//       createdAt: { $gte: thirtyDaysAgo },
+//     });
 
-    // Calculate growth rate
-    const previousMonthVillas = await VillaShowCase.countDocuments({
-      createdAt: {
-        $gte: new Date(thirtyDaysAgo.getTime() - 30 * 24 * 60 * 60 * 1000),
-        $lt: thirtyDaysAgo,
-      },
-    }); 
+//     // Calculate growth rate
+//     const previousMonthVillas = await VillaShowCase.countDocuments({
+//       createdAt: {
+//         $gte: new Date(thirtyDaysAgo.getTime() - 30 * 24 * 60 * 60 * 1000),
+//         $lt: thirtyDaysAgo,
+//       },
+//     });
 
-    const growthRate =
-      previousMonthVillas > 0
-        ? (
-            ((recentVillas - previousMonthVillas) / previousMonthVillas) *
-            100
-          ).toFixed(1)
-        : 0;
+//     const growthRate =
+//       previousMonthVillas > 0
+//         ? (
+//             ((recentVillas - previousMonthVillas) / previousMonthVillas) *
+//             100
+//           ).toFixed(1)
+//         : 0;
 
-    // Villa types distribution (optional - if you have villa types)
-    const villaTypeDistribution = await VillaShowCase.aggregate([
-      {
-        $group: {
-          _id: "$villaType",
-          count: { $sum: 1 },
-        },
-      },
-      {
-        $sort: { count: -1 },
-      },
-    ]);
+//     // Villa types distribution (optional - if you have villa types)
+//     const villaTypeDistribution = await VillaShowCase.aggregate([
+//       {
+//         $group: {
+//           _id: "$villaType",
+//           count: { $sum: 1 },
+//         },
+//       },
+//       {
+//         $sort: { count: -1 },
+//       },
+//     ]);
 
-    // Mock revenue calculation (replace with your actual booking/payment model)
-    const totalRevenue = totalVillas * 1500; // Assuming average revenue per villa
+//     // Mock revenue calculation (replace with your actual booking/payment model)
+//     const totalRevenue = totalVillas * 1500; // Assuming average revenue per villa
 
-    return res.status(200).json({
-      success: true,
-      error: false,
-      data: {
-        totalVillas,
-        totalUsers,
-        recentVillas,
-        recentUsers,
-        growthRate,
-        totalRevenue,
-        monthlyData,
-        villaTypeDistribution,
-        summary: {
-          totalVillas,
-          totalUsers,
-          growthRate: `+${growthRate}%`,
-          totalRevenue: `$${totalRevenue.toLocaleString()}`,
-        },
-      },
-    });
-  } catch (error) {
-    console.error("Dashboard Summary Error:", error);
-    return res.status(500).json({
-      message: error.message || error,
-      error: true,
-      success: false,
-    });
-  }
-};
+//     return res.status(200).json({
+//       success: true,
+//       error: false,
+//       data: {
+//         totalVillas,
+//         totalUsers,
+//         recentVillas,
+//         recentUsers,
+//         growthRate,
+//         totalRevenue,
+//         monthlyData,
+//         villaTypeDistribution,
+//         summary: {
+//           totalVillas,
+//           totalUsers,
+//           growthRate: `+${growthRate}%`,
+//           totalRevenue: `$${totalRevenue.toLocaleString()}`,
+//         },
+//       },
+//     });
+//   } catch (error) {
+//     console.error("Dashboard Summary Error:", error);
+//     return res.status(500).json({
+//       message: error.message || error,
+//       error: true,
+//       success: false,
+//     });
+//   }
+// };

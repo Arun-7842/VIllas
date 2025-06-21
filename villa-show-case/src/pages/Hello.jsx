@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import heroImage from "../assets/here-imge.png";
+import heroImage from "../assets/here-imge.webp";
 import SummaryApi from "../common/SummaryApi";
 import Axios from "../utils/Axios";
 import {
@@ -32,7 +32,10 @@ import BookingForm from "../components/BookingForm";
 import { cardData, whySection } from "../store/Dropdown";
 import { useNavigate } from "react-router-dom";
 import why_choose from "../assets/why_main.png";
-import AnimatedTestimonialsDemo from "../components/AnimatedTestimonialsDemo";
+import AnimatedTestimonialsDemo from "../components/AnimatedTestimonialsDemo.jsx";
+import villaSub from "../assets/sub-section.png";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
+import toast from "react-hot-toast";
 const Hello = () => {
   const [villadata, setVillaData] = useState([]);
   const [bookingParams, setBookingParams] = useState({
@@ -69,9 +72,11 @@ const Hello = () => {
     FaWalking: <FaWalking size={28} className="text-primary-400" />,
   };
   const [openPopup, setOpenPopup] = useState(false);
+  const [wishlist, setWishlist] = useState([]);
   const containerRef = useRef();
   const navigate = useNavigate();
   const handleOpenBooking = () => setOpenPopup(true);
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const villafet = async () => {
     try {
@@ -92,6 +97,71 @@ const Hello = () => {
   useEffect(() => {
     villafet();
   }, []);
+  const getUserIdFromStorage = () => {
+    try {
+      const userString = localStorage.getItem("user");
+      if (!userString) return null;
+
+      const parsed = JSON.parse(userString);
+      return parsed?.user?.id || parsed?.id || parsed?._id || null;
+    } catch (error) {
+      console.error("Invalid user data in localStorage:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      const userId = getUserIdFromStorage();
+      if (!userId) return;
+
+      try {
+        const url = SummaryApi.userWishlist.url.replace(":userId", userId);
+        const response = await Axios.get(url);
+        if (response.data.success) {
+          setWishlist(response.data.data.map((villa) => villa._id));
+        }
+      } catch (err) {
+        console.error("Failed to load wishlist:", err);
+      }
+    };
+
+    fetchWishlist();
+  }, []);
+
+  const handleWishlistToggle = async (villaId) => {
+    const userId = getUserIdFromStorage();
+
+    if (!userId) {
+      toast.error("Please login first");
+      return;
+    }
+
+    const isWishlisted = wishlist.includes(villaId);
+
+    try {
+      if (isWishlisted) {
+        const url = SummaryApi.userRemoveWishlist.url
+          .replace(":userId", userId)
+          .replace(":itemId", villaId);
+        const response = await Axios.delete(url);
+        if (response.data.success) {
+          setWishlist((prev) => prev.filter((id) => id !== villaId));
+          toast.success("Removed from wishlist");
+        }
+      } else {
+        const url = SummaryApi.userAddWishlist.url.replace(":userId", userId);
+        const response = await Axios.post(url, { itemId: villaId });
+        if (response.data.success) {
+          setWishlist((prev) => [...prev, villaId]);
+          toast.success("Added to wishlist");
+        }
+      }
+    } catch (err) {
+      console.error("Wishlist toggle error:", err);
+      toast.error("Something went wrong");
+    }
+  };
   const handleScrollLeft = () => {
     containerRef.current.scrollBy({ left: -200, behavior: "smooth" });
   };
@@ -167,6 +237,7 @@ const Hello = () => {
                 bookingParams={bookingParams}
                 setBookingParams={setBookingParams}
                 onBook={handleOpenBooking}
+                isLoggedIn={user !== null}
               />
               {openPopup && (
                 <BookingForm
@@ -273,7 +344,7 @@ const Hello = () => {
                     className="min-w-full h-full snap-start border p-6 bg-white rounded-md flex flex-col md:flex-row gap-4 md:gap-6"
                   >
                     <div className="flex flex-col gap-4 w-full">
-                      <div className="w-full h-[200px] md:h-[300px] ">
+                      <div className="w-full h-[200px] md:h-[300px] relative">
                         <img
                           src={
                             villa.coverImage ||
@@ -282,6 +353,19 @@ const Hello = () => {
                           alt={villa.villaTitle || "No Title"}
                           className="w-full h-full object-cover rounded-md"
                         />
+                        <button
+                          onClick={() => handleWishlistToggle(villa._id)}
+                          className="absolute top-2 right-2 bg-white p-2 rounded-full z-10"
+                        >
+                          {wishlist.includes(villa._id) ? (
+                            <FaHeart
+                              size={18}
+                              className="text-red-600 fill-red-600"
+                            />
+                          ) : (
+                            <FaRegHeart size={18} className="text-red-600" />
+                          )}
+                        </button>
                       </div>
                       <div className="flex items-center gap-2">
                         <strong>Avalable on :</strong>
@@ -342,9 +426,7 @@ const Hello = () => {
                       <div className="flex gap-4 items-center justify-end">
                         <button
                           className=" py-1 px-4  hover:text-black  hover:bg-secondary-500  bg-primary-400 text-sm rounded-full text-white font-semibold"
-                          onClick={() =>
-                            navigate(`/VillaDetails/${villadata[0]._id}`)
-                          }
+                          onClick={() => navigate(`/VillaDetails/${villa._id}`)}
                         >
                           View
                         </button>
@@ -390,9 +472,9 @@ const Hello = () => {
                   </p>
                 </div>
                 <div className="w-full ">
-                  <div className="flex flex-col gap-6 bg-[#fff]/10 p-10 rounded-xl backdrop-blur-md text-white shadow-lg w-full">
+                  <div className="flex flex-col gap-6 bg-[#fff]/10 p-4 lg:p-10 rounded-xl backdrop-blur-md text-white shadow-lg w-full">
                     <h3 className="flex items-center gap-2">
-                      <IoCallSharp size={24} /> +1 (123) 456-7890
+                      <IoCallSharp size={18} /> +91 - 7499810250 / 8483099923
                     </h3>
                     <h1 className="text-xl font-semibold text-white">
                       Unit Detail
@@ -460,156 +542,35 @@ const Hello = () => {
         <section>
           <AnimatedTestimonialsDemo />
         </section>
+        <section className="container mx-auto px-4 md:px-10 lg:px-20  flex flex-col gap-10">
+          <div className="subscribe_section">
+            <div>
+              <div>
+                <h1 className="text-xl md:text-4xl lg:text-6xl font-bold text-white">
+                  Find Your Dream Villa Today!
+                </h1>
+              </div>
+            </div>
+            <div className="flex flex-col-reverse md:flex-row items-start gap-4 h-full w-full">
+              <div className="flex flex-col gap-4 justify-between h-[100%] w-full">
+                <p className=" text-md md:text-lg font-medium text-white">
+                  Get the latest listings for luxury villas on rent. From
+                  beachside retreats to serene countryside escapes we'll help
+                  you find the perfect villa.
+                </p>
+                <button className="w-fit py-2 px-6 rounded-full bg-cyan-400 text-sm font-bold text-black hover:bg-cyan-300 transition">
+                  Connect
+                </button>
+              </div>
+              <div className="h-full w-full">
+                <img src={villaSub} alt={villaSub} />
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );
 };
 
 export default Hello;
-// import React, { useEffect, useState } from "react";
-// import heroImage from "../assets/here-imge.png";
-// import SummaryApi from "../common/SummaryApi";
-// import Axios from "../utils/Axios";
-// import { FaAngleRight } from "react-icons/fa";
-// import BookingBar from "../components/BookingBar";
-// const Hello = () => {
-//   const [villadata, setVillaData] = useState([]);
-//   const [bookingParams, setBookingParams] = useState({
-//     location: "",
-//     roomType: "",
-//     person: 1,
-//     checkIn: "",
-//     checkOut: "",
-//   });
-//   const [openPopup, setOpenPopup] = useState(false);
-
-//   const handleOpenBooking =() => setOpenPopup(true);
-//   const villafet = async () => {
-//     try {
-//       const response = await Axios({
-//         ...SummaryApi.getVilla,
-//       });
-//       const { data: ResponseData } = response;
-
-//       if (ResponseData.success) {
-//         setVillaData(ResponseData.data);
-//       }
-
-//       console.log("Fetched Villa Data:", ResponseData.data);
-//     } catch (error) {
-//       console.error("Failed to fetch villas:", error.message || error);
-//     }
-//   };
-//   useEffect(() => {
-//     villafet();
-//   }, []);
-//   return (
-//     <div>
-//       <div>
-//         <section>
-//           <div className="hero_section">
-//             <div className="flex items-start gap-10 h-full w-full">
-//               <div className="w-full h-full flex flex-col justify-between">
-//                 <div className="flex w-full justify-end">
-//                   <div className="flex flex-col gap-4">
-//                     <p className="text-white text-sm">
-//                       Find your perfect villa experience — curated and brought
-//                       to your <br /> screen.
-//                     </p>
-//                     <div className="w-20 h-2 bg-secondary-200"></div>
-//                   </div>
-//                 </div>
-//                 <div>
-//                   <img src={heroImage} alt="heroimage" className="w-[600px]" />
-//                 </div>
-//               </div>
-//               <div className="w-full flex flex-col gap-8">
-//                 <div>
-//                   <div>
-//                     <h1 className="text-[64px] font-bold text-white">
-//                       LONAVALA
-//                     </h1>
-//                     <h1 className="text-[64px] font-bold text-white">
-//                       STAY-VILLA
-//                     </h1>
-//                   </div>
-//                   <p className="text-white text-sm">
-//                     Step into a world of elegance, comfort, and visual
-//                     inspiration. Explore <br /> handpicked villas from stunning
-//                     locations, crafted for those who appreciate <br /> the art
-//                     of living well.
-//                   </p>
-//                 </div>
-//                 <div>
-//                   {villadata.length > 0 && (
-//                     <div className="flex items-center gap-4 bg-[#727B94] w-fit px-4 py-3 rounded-xl">
-//                       <img
-//                         src={villadata[0].coverImage}
-//                         alt={villadata[0].villaTitle}
-//                         className="w-[130px] h-[100px] object-cover rounded-xl"
-//                       />
-//                       <div className="flex flex-col gap-2">
-//                         <h2 className="text-sm font-semibold text-white">
-//                           Check our latest <br /> property
-//                         </h2>
-//                         <a
-//                           href={`/VillaDetails/${villadata[0]._id}`}
-//                           className="text-white hover:text-secondary-200 flex items-center gap-1"
-//                         >
-//                           Learn More <FaAngleRight />
-//                         </a>{" "}
-//                       </div>
-//                     </div>
-//                   )}
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//           <div className="here_letest_villa">
-//             <div className="">
-//               <BookingBar data={villadata} />
-//             </div>
-//             <div className="">
-//               {villadata.length > 0 && (
-//                 <div className="container mx-auto max-w-3xl flex items-start gap-10">
-//                   <div className="here_letest_img">
-//                     <img
-//                       src={villadata[0].coverImage}
-//                       alt={villadata[0].villaTitle}
-//                     />
-//                   </div>
-//                   <div className="w-full flex flex-col gap-6">
-//                     <h6 className="font-semibold text-sm text-secondary-200">
-//                       ABOUT US
-//                     </h6>
-//                     <div className="flex flex-col gap-4">
-//                       <h1 className="text-3xl font-bold text-white">
-//                         {villadata[0].villaTitle}
-//                       </h1>
-//                       <p className="text-sm  font-normal text-white">
-//                         {villadata[0].description
-//                           ? villadata[0].description
-//                               .split(" ")
-//                               .slice(0, 30)
-//                               .join(" ") + "..."
-//                           : ""}
-//                       </p>
-//                     </div>
-//                     <a
-//                       href={`/VillaDetails/${villadata[0]._id}`}
-//                       className="w-fit bg-secondary-200 py-2 px-4 rounded-full text-sm font-semibold"
-//                     >
-//                       Learn Mote
-//                     </a>
-//                   </div>
-//                 </div>
-//               )}
-//             </div>
-//           </div>
-//         </section>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Hello;

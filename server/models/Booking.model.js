@@ -14,17 +14,14 @@ const bookingSchema = new mongoose.Schema({
     required: true,
   },
   villaSelected: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "villaShowCase",
     required: true,
   },
   cities: {
     type: String,
     required: true,
   },
-  // roomType: {
-  //   type: String,
-  //   required: true,
-  // },
   person: {
     type: Number,
     required: true,

@@ -3,6 +3,7 @@ import "./App.css";
 import { Outlet } from "react-router-dom";
 import Header from "./components/Header";
 import { Toaster } from "react-hot-toast";
+import Footer from "./components/Footer";
 function App() {
   return (
     <>
@@ -10,6 +11,7 @@ function App() {
       <main>
         <Outlet />
       </main>
+      <Footer />
       <Toaster position="top-right" reverseOrder={false} />
     </>
   );

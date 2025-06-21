@@ -14,17 +14,17 @@ const UserMenu = () => {
   const userData = [
     {
       icon: <MdSpaceDashboard size={24} />,
-      path: "/profile",
-      name: "Profile",
+      path: "/user-data",
+      name: "Dashboard",
     },
     {
       icon: <MdHomeFilled size={24} />,
-      path: "/Wishlist",
+      path: "/user-data/Wishlist",
       name: "Wishlist",
     },
     {
       icon: <MdAddCircle size={24} />,
-      path: "About-Us",
+      path: "/about-us",
       name: "About us",
     },
   ];

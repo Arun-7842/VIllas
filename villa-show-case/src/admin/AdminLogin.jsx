@@ -101,7 +101,7 @@ const AdminLogin = () => {
           <button
             disabled={!validealue}
             className={`${
-              validealue ? "bg-green-800 hover:bg-green-700" : "bg-gray-500 "
+              validealue ? "bg-primary-400 hover:primary-200" : "bg-gray-500 "
             } text-white py-2 px-6 rounded font-semibold my-3 tracking-wide`}
           >
             Login
@@ -110,8 +110,8 @@ const AdminLogin = () => {
         <p>
           Don't you have account?{" "}
           <Link
-            to={"/registration"}
-            className="text-green-700 font-semibold text hover:text-green-900"
+            to={"/register"}
+            className="text-primary-400 font-semibold text hover:primary-200"
           >
             Register
           </Link>

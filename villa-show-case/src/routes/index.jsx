@@ -8,12 +8,19 @@ import Home from "../admin/adminPages/Home";
 import Villa from "../admin/adminPages/Villa";
 import AddNewVilla from "../admin/adminPages/AddNewVilla";
 import Bookings from "../admin/adminPages/Bookings";
-import Inquiries from "../admin/adminPages/Inquiries";
-import AddTestimonials from "../admin/adminPages/AddTestimonials";
 import Registration from "../components/Registration";
 import ForgotPassword from "../components/ForgotPassword";
 import VillaDetails from "../components/VillaDetails";
-// import AdminPermission from "../layout/AdminPermission";
+import AddTestimonial from "../admin/adminPages/AddTestimonial";
+import ShowTestimonials from "../admin/adminPages/ShowTestimonials";
+import VillaDetailsForUser from "../components/VillaDetailsForUser";
+import DashboardUser from "../user/dashboard/DashboardUser";
+import UserProfile from "../user/UserProfile";
+import UserWishlist from "../user/UserWishlist";
+import TermsAndConditions from "../components/TermsAndConditions";
+import PrivacyPolicy from "../components/PrivacyPolicy";
+import About from "../components/About";
+import Services from "../components/Services";
 
 const router = createBrowserRouter([
   {
@@ -25,11 +32,11 @@ const router = createBrowserRouter([
         element: <Hello />,
       },
       {
-        path: "/admin-login",
+        path: "/login",
         element: <AdminLogin />,
       },
       {
-        path: "/registration",
+        path: "/Admin",
         element: <AdminRegistration />,
       },
       {
@@ -42,8 +49,25 @@ const router = createBrowserRouter([
       },
       {
         path: "VillaDetails/:id",
-        element: <VillaDetails />,
+        element: <VillaDetailsForUser />,
       },
+      {
+        path: "about-us",
+        element: <About />,
+      },
+      {
+        path: "services",
+        element: <Services />,
+      },
+      {
+        path: "terms-and-conditions",
+        element: <TermsAndConditions />,
+      },
+      {
+        path: "privacy-policy",
+        element: <PrivacyPolicy />,
+      },
+
       {
         path: "/dashboard",
         element: <Dashboard />,
@@ -66,15 +90,49 @@ const router = createBrowserRouter([
           },
           {
             path: "Add-testimonials",
-            element: <AddTestimonials />,
+            element: <AddTestimonial />,
+          },
+          {
+            path: "testimonials",
+            element: <ShowTestimonials />,
           },
           {
             path: "booking",
             element: <Bookings />,
           },
+        ],
+      },
+      {
+        path: "/user-data",
+        element: <DashboardUser />,
+        children: [
           {
-            path: "Inquirie",
-            element: <Inquiries />,
+            index: true,
+            element: <UserProfile />,
+          },
+          {
+            path: "Wishlist",
+            element: <UserWishlist />,
+          },
+          {
+            path: "VillaDetails/:id",
+            element: <VillaDetails />,
+          },
+          {
+            path: "Add-New-Villa",
+            element: <AddNewVilla />,
+          },
+          {
+            path: "Add-testimonials",
+            element: <AddTestimonial />,
+          },
+          {
+            path: "testimonials",
+            element: <ShowTestimonials />,
+          },
+          {
+            path: "booking",
+            element: <Bookings />,
           },
         ],
       },

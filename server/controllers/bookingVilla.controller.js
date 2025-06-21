@@ -85,7 +85,36 @@ export const bookVillaController = async (req, res) => {
     });
   }
 };
+export const getAllBookingsController = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const skip = (page - 1) * limit;
 
+    const total = await bookingModel.countDocuments();
+    const bookings = await bookingModel
+      .find()
+      .populate("villaSelected", "villaTitle")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    res.status(200).json({
+      success: true,
+      error: false,
+      data: bookings,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalItems: total,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: true,
+      message: error.message,
+    });
+  }
+};
 export const checkAvailabilityController = async (req, res) => {
   const villaId = req.params.id;
   const { checkIn, checkOut, persons } = req.body;

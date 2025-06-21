@@ -1,9 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { FaUser, FaHotel, FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { persone } from "../store/Dropdown.jsx";
-
-const BookingBar = ({ data, bookingParams, setBookingParams, onBook }) => {
+import { useNavigate } from "react-router-dom";
+const BookingBar = ({
+  data,
+  bookingParams,
+  setBookingParams,
+  onBook,
+  isLoggedIn,
+}) => {
+  const navigate = useNavigate();
   const cities = [...new Set(data.map((v) => v.city))];
+
+  const handleBooking = () => {
+    if (isLoggedIn) {
+      onBook();
+    } else {
+      navigate("/login");
+    }
+  };
   return (
     <section className="px-4 sm:px-8 md:px-0">
       <div className="bg-primary-400 rounded-2xl px-4 py-4 md:py-6 md:px-8 flex flex-wrap md:flex-nowrap items-center justify-between gap-4 shadow-lg text-white w-full max-w-6xl mx-auto">
@@ -107,7 +122,7 @@ const BookingBar = ({ data, bookingParams, setBookingParams, onBook }) => {
         </div>
         {/* Button */}
         <button
-          onClick={onBook}
+          onClick={handleBooking}
           className="bg-cyan-400 hover:bg-cyan-300 text-black font-semibold py-2 px-6 rounded-full transition"
         >
           Book Now

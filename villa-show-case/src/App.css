@@ -29,13 +29,49 @@ body {
 }
 
 .hero_section {
-  background-image: url(./assets/here_bg.png);
+  background-image: url(./assets/here_bg.webp);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   width: 100%;
   height: 88vh;
   padding: 40px 0px 0px 0px;
+}
+
+.teamscondition {
+  background-image: url(./assets/teams-contition.webp);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 40vh;
+}
+
+.aboutus {
+  background-image: url(./assets/about-image.webp);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 40vh;
+}
+
+.services {
+  background-image: url(./assets/services-imgae.webp);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 40vh;
+}
+
+.privacyPolicy {
+  background-image: url(./assets/privacy-policy.webp);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 40vh;
 }
 
 .here_letest_villa {
@@ -62,10 +98,7 @@ body {
   border-radius: 0% 32% 0% 32% / 0% 32% 0% 32%;
 }
 
-.luxury_section {
-  padding: 0px 80px;
 
-}
 
 .luxury_card_section {
   background-image: url(./assets/luxury_bg.png);
@@ -86,6 +119,10 @@ body {
   scrollbar-width: none;
 }
 
+.luxury_section {
+  padding: 0px 80px;
+}
+
 .Luxury_section {
   background-image: url(./assets/villa_show_case.png);
   background-size: cover;
@@ -94,6 +131,19 @@ body {
   border-radius: 32px;
   width: 100%;
   height: 90vh;
+}
+
+.subscribe_section {
+  background-image: url(./assets/sub-bg.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 32px;
+  width: 100%;
+  padding: 32px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 }
 
 @media screen and (max-width: 768px) {
@@ -109,14 +159,25 @@ body {
   .luxury_card_section {
     padding: 24px 32px;
   }
+
 }
 
 @media screen and (max-width: 600px) {
   .luxury_section {
     padding: 24px 20px;
+    height: 100%;
+  }
+
+  .Luxury_section {
+    height: 100%;
   }
 
   .luxury_card_section {
     padding: 24px;
+  }
+
+  .subscribe_section {
+    padding: 24px;
+    gap: 24px;
   }
 }

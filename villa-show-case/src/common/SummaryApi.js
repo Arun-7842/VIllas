@@ -45,6 +45,24 @@ const SummaryApi = {
     url: "/api/file/upload",
     method: "post",
   },
+  //testimonials
+
+  testimonial: {
+    url: "/api/tesimonial/add-testimonial",
+    method: "post",
+  },
+  getTestimonials: {
+    url: "/api/tesimonial/get-testimonials",
+    method: "get",
+  },
+  updateTestimonial: {
+    url: "/api/tesimonial/update-testimonial/:id",
+    method: "put",
+  },
+  deleteTestimonial: {
+    url: "/api/tesimonial/delete-testimonial/:id",
+    method: "delete",
+  },
   // user
   userRegistration: {
     url: "/api/user/register",
@@ -90,8 +108,12 @@ const SummaryApi = {
     url: "/api/book/bookingVilla",
     method: "post",
   },
-  bookVillaCheck: (id) => ({
-    url: "/api/book/villa/:id/availability",
+  getAllBookings: {
+    url: "/api/book/all",
+    method: "get",
+  },
+  bookVillaCheck: (_id) => ({
+    url: `/api/book/villa/${_id}/availability`,
     method: "post",
   }),
 };
