@@ -14,8 +14,13 @@ import {
   FaWalking,
 } from "react-icons/fa";
 import { IoCallSharp } from "react-icons/io5";
-import { FaElevator } from "react-icons/fa6";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import {
+  FaElevator,
+  FaFacebook,
+  FaInstagram,
+  FaXTwitter,
+} from "react-icons/fa6";
+import { IoIosArrowBack, IoIosArrowForward, IoIosCall } from "react-icons/io";
 import { GiPlantRoots, GiWaterDrop, GiSolarPower } from "react-icons/gi";
 import {
   MdTheaters,
@@ -26,7 +31,6 @@ import {
   MdChildCare,
   MdDeck,
 } from "react-icons/md";
-import { FaAngleRight } from "react-icons/fa";
 import BookingBar from "../components/BookingBar";
 import BookingForm from "../components/BookingForm";
 import { cardData, whySection } from "../store/Dropdown";
@@ -34,7 +38,7 @@ import { useNavigate } from "react-router-dom";
 import why_choose from "../assets/why_main.png";
 import AnimatedTestimonialsDemo from "../components/AnimatedTestimonialsDemo.jsx";
 import villaSub from "../assets/sub-section.png";
-import { FaRegHeart, FaHeart } from "react-icons/fa";
+import { FaRegHeart, FaHeart, FaWhatsapp, FaAngleRight } from "react-icons/fa";
 import toast from "react-hot-toast";
 const Hello = () => {
   const [villadata, setVillaData] = useState([]);
@@ -558,9 +562,13 @@ const Hello = () => {
                   beachside retreats to serene countryside escapes we'll help
                   you find the perfect villa.
                 </p>
-                <button className="w-fit py-2 px-6 rounded-full bg-cyan-400 text-sm font-bold text-black hover:bg-cyan-300 transition">
+                <a
+                  href="https://wa.me/7499810250"
+                  target="_blank"
+                  className="w-fit py-2 px-6 rounded-full bg-cyan-400 text-sm font-bold text-black hover:bg-cyan-300 transition"
+                >
                   Connect
-                </button>
+                </a>
               </div>
               <div className="h-full w-full">
                 <img src={villaSub} alt={villaSub} />
@@ -568,6 +576,52 @@ const Hello = () => {
             </div>
           </div>
         </section>
+      </div>
+      <div className="fixed top-1/2 right-0 flex flex-col gap-2">
+        <div className="flex flex-col gap-2">
+          <a
+            href="https://wa.me/7499810250"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-primary-400 p-2 rounded-tl-xl rounded-bl-xl text-white hover:text-secondary-200 transition-all"
+          >
+            <FaWhatsapp size={20} />
+          </a>
+          <a
+            href="tel:7499810250"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-primary-400 p-2 rounded-tl-xl rounded-bl-xl text-white hover:text-secondary-200 transition-all"
+          >
+            <IoIosCall size={20} />
+          </a>
+        </div>
+        <div className="bg-primary-400 p-2 rounded-tl-xl rounded-bl-xl flex flex-col gap-3">
+          <a
+            href="tel:7499810250"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white hover:text-secondary-200 transition-all"
+          >
+            <FaInstagram size={20} />
+          </a>
+          <a
+            href="tel:7499810250"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white hover:text-secondary-200 transition-all"
+          >
+            <FaFacebook size={19} />
+          </a>
+          <a
+            href="tel:7499810250"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white hover:text-secondary-200 transition-all"
+          >
+            <FaXTwitter size={18} />
+          </a>
+        </div>
       </div>
     </div>
   );

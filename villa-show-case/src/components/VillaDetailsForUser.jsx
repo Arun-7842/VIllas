@@ -28,7 +28,7 @@ import {
 const VillaDetailsForUser = () => {
   const { id } = useParams();
   const [villa, setVilla] = useState(null);
-  const containerRef = useRef();
+  const containerRef = useRef(null);
   const iconMap = {
     FaSwimmingPool: <FaSwimmingPool size={28} className="text-primary-400" />,
     GiPlantRoots: <GiPlantRoots size={28} className="text-primary-400" />,
@@ -72,12 +72,31 @@ const VillaDetailsForUser = () => {
 
     fetchVilla();
   }, [id]);
+  useEffect(() => {
+    const scrollContainer = containerRef.current;
+
+    const interval = setInterval(() => {
+      if (!scrollContainer) return;
+
+      const maxScrollLeft =
+        scrollContainer.scrollWidth - scrollContainer.clientWidth;
+      const currentScrollLeft = scrollContainer.scrollLeft;
+
+      if (currentScrollLeft >= maxScrollLeft - 10) {
+        scrollContainer.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        scrollContainer.scrollBy({ left: 1104, behavior: "smooth" });
+      }
+    }, 4000); 
+
+    return () => clearInterval(interval);
+  }, []);
   if (!villa) return <div>Loading...</div>;
   const handleScrollLeft = () => {
-    containerRef.current.scrollBy({ left: -400, behavior: "smooth" });
+    containerRef.current.scrollBy({ left: -1104, behavior: "smooth" });
   };
   const handleScrollRight = () => {
-    containerRef.current.scrollBy({ left: 400, behavior: "smooth" });
+    containerRef.current.scrollBy({ left: 1104, behavior: "smooth" });
   };
   return (
     <section className="container mx-auto lg:px-20 md:px-10 px-4 py-6">
