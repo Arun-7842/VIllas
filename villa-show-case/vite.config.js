@@ -9,4 +9,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"), // this makes @ point to the /src folder
     },
   },
+  build: {
+    outDir: "dist", 
+  },
 });

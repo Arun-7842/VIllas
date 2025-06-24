@@ -86,17 +86,17 @@ const Hello = () => {
   const villafet = async () => {
     try {
       const response = await Axios({
-        ...SummaryApi.getVilla,
+        ...SummaryApi?.getVilla,
       });
       const { data: ResponseData } = response;
 
-      if (ResponseData.success) {
-        setVillaData(ResponseData.data);
+      if (ResponseData?.success) {
+        setVillaData(ResponseData?.data);
       }
 
-      console.log("Fetched Villa Data:", ResponseData.data);
+      console.log("Fetched Villa Data:", ResponseData?.data);
     } catch (error) {
-      console.error("Failed to fetch villas:", error.message || error);
+      console.error("Failed to fetch villas:", error?.message || error);
     }
   };
   useEffect(() => {
@@ -121,10 +121,10 @@ const Hello = () => {
       if (!userId) return;
 
       try {
-        const url = SummaryApi.userWishlist.url.replace(":userId", userId);
+        const url = SummaryApi?.userWishlist?.url.replace(":userId", userId);
         const response = await Axios.get(url);
-        if (response.data.success) {
-          setWishlist(response.data.data.map((villa) => villa._id));
+        if (response?.data?.success) {
+          setWishlist(response?.data?.data.map((villa) => villa?._id));
         }
       } catch (err) {
         console.error("Failed to load wishlist:", err);
@@ -146,18 +146,18 @@ const Hello = () => {
 
     try {
       if (isWishlisted) {
-        const url = SummaryApi.userRemoveWishlist.url
+        const url = SummaryApi?.userRemoveWishlist?.url
           .replace(":userId", userId)
           .replace(":itemId", villaId);
         const response = await Axios.delete(url);
-        if (response.data.success) {
+        if (response?.data?.success) {
           setWishlist((prev) => prev.filter((id) => id !== villaId));
           toast.success("Removed from wishlist");
         }
       } else {
-        const url = SummaryApi.userAddWishlist.url.replace(":userId", userId);
+        const url = SummaryApi?.userAddWishlist?.url.replace(":userId", userId);
         const response = await Axios.post(url, { itemId: villaId });
-        if (response.data.success) {
+        if (response?.data?.success) {
           setWishlist((prev) => [...prev, villaId]);
           toast.success("Added to wishlist");
         }
