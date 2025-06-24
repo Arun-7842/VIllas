@@ -76,14 +76,22 @@ const SummaryApi = {
     url: "/api/user/logout",
     method: "get",
   },
+
+  // password forgate
   userForgotPassword: {
     url: "/api/user/forgot-password",
     method: "put",
   },
+
   verifyOtp: {
     url: "/api/user/verify-otp",
     method: "put",
   },
+  reset_password: {
+    url: "/api/user/reset-password",
+    method: "put",
+  },
+
   userDetails: {
     url: "/api/user/profile/:id",
     method: "get",

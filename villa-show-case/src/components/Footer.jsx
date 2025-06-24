@@ -2,6 +2,7 @@ import React from "react";
 import footerLogo from "../assets/LSTV-01.png";
 import { Link } from "react-router-dom";
 import { FaFacebook, FaInstagram, FaXTwitter } from "react-icons/fa6";
+import { TbBrandAirbnb } from "react-icons/tb";
 const Footer = () => {
   return (
     <section className=" bg-primary-200 mt-20 flex flex-col gap-3">
@@ -21,7 +22,7 @@ const Footer = () => {
             </h1>
             <div className="flex items-center gap-3">
               <a
-                href="tel:7499810250"
+                href="https://www.instagram.com/__travel_moments?igsh=MWh0cHRqZWpwNjB6Mg=="
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-secondary-200 transition-all"
@@ -29,7 +30,7 @@ const Footer = () => {
                 <FaInstagram size={24} />
               </a>
               <a
-                href="tel:7499810250"
+                href="https://www.facebook.com/share/16fuuPAbkd/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-secondary-200 transition-all"
@@ -37,12 +38,12 @@ const Footer = () => {
                 <FaFacebook size={24} />
               </a>
               <a
-                href="tel:7499810250"
+                href="https://www.airbnb.co.in/rooms/1425122551068313566?guests=1&adults=1&s=67&unique_share_id=d9d79364-c20b-42f7-aa9e-d0903a66e47b"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-secondary-200 transition-all"
               >
-                <FaXTwitter size={24} />
+                <TbBrandAirbnb size={24} />
               </a>
             </div>
           </div>
@@ -97,7 +98,14 @@ const Footer = () => {
       <div className="w-full h-[1px] bg-gray-600"></div>
       <div className="p-3">
         <p className="text-center text-sm text-gray-200">
-          &copy; 2023 LSTV. All rights reserved.
+          &copy; 2025. All rights reserved. | Designed & Developed by{" "}
+          <a
+            href="linkedin.com/in/pratik-dhere-4b5316251"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Pratik Dhere
+          </a>
         </p>
       </div>
     </section>

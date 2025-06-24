@@ -88,7 +88,9 @@ const OtpVerification = () => {
           <button
             disabled={!validealue}
             className={`${
-              validealue ? "bg-green-800 hover:bg-green-700" : "bg-gray-500 "
+              validealue
+                ? "bg-primary-200 hover:bg-primary-400"
+                : "bg-gray-500 "
             } text-white py-2 px-6 rounded font-semibold my-3 tracking-wide`}
           >
             Verify OTP
@@ -98,7 +100,7 @@ const OtpVerification = () => {
           Already you have account?{" "}
           <Link
             to={"/login"}
-            className="text-green-700 font-semibold text hover:text-green-900"
+            className="text-primary-200 font-semibold text hover:text-primary-400"
           >
             Login
           </Link>

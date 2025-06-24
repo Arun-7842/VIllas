@@ -13,6 +13,7 @@ import {
   FaUsers,
   FaWalking,
 } from "react-icons/fa";
+import { TbBrandAirbnb } from "react-icons/tb";
 import { IoCallSharp } from "react-icons/io5";
 import {
   FaElevator,
@@ -598,28 +599,28 @@ const Hello = () => {
         </div>
         <div className="bg-primary-400 p-2 rounded-tl-xl rounded-bl-xl flex flex-col gap-3">
           <a
-            href="tel:7499810250"
+            href="https://www.instagram.com/__travel_moments?igsh=MWh0cHRqZWpwNjB6Mg=="
             target="_blank"
             rel="noopener noreferrer"
             className="text-white hover:text-secondary-200 transition-all"
           >
-            <FaInstagram size={20} />
+            <FaInstagram size={24} />
           </a>
           <a
-            href="tel:7499810250"
+            href="https://www.facebook.com/share/16fuuPAbkd/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-white hover:text-secondary-200 transition-all"
           >
-            <FaFacebook size={19} />
+            <FaFacebook size={24} />
           </a>
           <a
-            href="tel:7499810250"
+            href="https://www.airbnb.co.in/rooms/1425122551068313566?guests=1&adults=1&s=67&unique_share_id=d9d79364-c20b-42f7-aa9e-d0903a66e47b"
             target="_blank"
             rel="noopener noreferrer"
             className="text-white hover:text-secondary-200 transition-all"
           >
-            <FaXTwitter size={18} />
+            <TbBrandAirbnb size={24} />
           </a>
         </div>
       </div>

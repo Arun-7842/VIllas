@@ -269,6 +269,62 @@ export async function verifyForgotPasswordOtpController(req, res) {
     });
   }
 }
+
+export async function resetPasswordController(req, res) {
+  try {
+    const { email, newPassword, confirmPassword } = req.body;
+
+    if (!email || !newPassword || !confirmPassword) {
+      return res.status(400).json({
+        message: "Provide required fields: email, newPassword, confirmPassword",
+        error: true,
+        success: false,
+      });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({
+        message: "New Password and Confirm Password do not match",
+        error: true,
+        success: false,
+      });
+    }
+
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    // Encrypt the new password
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(newPassword, salt);
+
+    // Update user's password and clear any previous OTP/expiry
+    await userModel.findByIdAndUpdate(user._id, {
+      password: hashedPassword,
+      forget_password_otp: "",
+      forget_password_expiry: "",
+    });
+
+    return res.status(200).json({
+      message: "Password reset successfully",
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || "Server error",
+      error: true,
+      success: false,
+    });
+  }
+}
+
 export const getUserProfileController = async (req, res) => {
   try {
     const user = await userModel.findById(req.params.id).select("-password");

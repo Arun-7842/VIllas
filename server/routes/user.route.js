@@ -11,6 +11,7 @@ import {
   userLogoutController,
   forgotPasswordController,
   verifyForgotPasswordOtpController,
+  resetPasswordController,
 } from "../controllers/user.controller.js";
 
 const userRouter = Router();
@@ -20,6 +21,7 @@ userRouter.post("/login", userLoginController);
 userRouter.get("/logout", userLogoutController);
 userRouter.put("/forgot-password", forgotPasswordController);
 userRouter.put("/verify-otp", verifyForgotPasswordOtpController);
+userRouter.put("/reset-password", resetPasswordController);
 
 // User Profile
 userRouter.get("/profile/:id", getUserProfileController);

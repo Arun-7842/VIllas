@@ -66,7 +66,9 @@ const ForgotPassword = () => {
           <button
             disabled={!validealue}
             className={`${
-              validealue ? "bg-green-800 hover:bg-green-700" : "bg-gray-500 "
+              validealue
+                ? "bg-primary-200 hover:bg-primary-400"
+                : "bg-gray-500 "
             } text-white py-2 px-6 rounded font-semibold my-3 tracking-wide`}
           >
             Send otp

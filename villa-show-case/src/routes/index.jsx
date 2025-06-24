@@ -21,6 +21,8 @@ import TermsAndConditions from "../components/TermsAndConditions";
 import PrivacyPolicy from "../components/PrivacyPolicy";
 import About from "../components/About";
 import Services from "../components/Services";
+import OtpVerification from "../components/OtpVerification";
+import ResetPassword from "../components/ResetPassword";
 
 const router = createBrowserRouter([
   {
@@ -67,7 +69,14 @@ const router = createBrowserRouter([
         path: "privacy-policy",
         element: <PrivacyPolicy />,
       },
-
+      {
+        path: "/verification-otp",
+        element: <OtpVerification />,
+      },
+      {
+        path: "/reset-password",
+        element: <ResetPassword />,
+      },
       {
         path: "/dashboard",
         element: <Dashboard />,
