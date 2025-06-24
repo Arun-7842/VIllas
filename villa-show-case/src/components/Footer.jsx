@@ -100,7 +100,7 @@ const Footer = () => {
         <p className="text-center text-sm text-gray-200">
           &copy; 2025. All rights reserved. | Designed & Developed by{" "}
           <a
-            href="linkedin.com/in/pratik-dhere-4b5316251"
+            href="https://www.linkedin.com/in/pratik-dhere-full-stack-developer"
             target="_blank"
             rel="noopener noreferrer"
           >
