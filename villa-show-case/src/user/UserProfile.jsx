@@ -18,7 +18,6 @@ const UserProfile = () => {
 
       // Get user data from localStorage
       const userString = localStorage.getItem("user");
-      console.log("User string from localStorage:", userString);
 
       if (!userString) {
         setError("User not logged in");
@@ -27,7 +26,6 @@ const UserProfile = () => {
       }
 
       const loggedInUser = JSON.parse(userString);
-      console.log("Parsed user data:", loggedInUser);
 
       // Handle different possible structures of stored user data
       let userId;
@@ -45,14 +43,11 @@ const UserProfile = () => {
         return;
       }
 
-      console.log("Using userId:", userId);
 
       // Fetch user profile from API
       const url = SummaryApi.userDetails.url.replace(":id", userId);
-      console.log("API URL:", url);
 
       const response = await Axios.get(url);
-      console.log("API Response:", response.data);
 
       if (response.data.success) {
         setUser(response.data.data);

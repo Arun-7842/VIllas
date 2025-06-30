@@ -41,7 +41,6 @@ const Home = () => {
       });
 
       const { data: responseData } = response;
-      console.log("API Response:", responseData);
 
       if (responseData.success) {
         setDashboardData(responseData.data);

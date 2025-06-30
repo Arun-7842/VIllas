@@ -34,7 +34,6 @@ const UserMenu = () => {
         ...SummaryApi.userLogout,
         withCredentials: true,
       });
-      console.log("Logout Response:", response?.data);
       if (response?.data?.success) {
         dispatch(logoutAdmin());
         localStorage.clear();

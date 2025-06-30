@@ -54,7 +54,6 @@ const Registration = () => {
         });
         navigate("/");
       }
-      console.log("response", response.data);
     } catch (error) {
       AxiosToastError(error);
     }

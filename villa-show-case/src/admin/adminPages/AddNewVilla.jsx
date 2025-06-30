@@ -28,6 +28,7 @@ const AddNewVilla = () => {
     description: "",
     coverImage: "",
     images: [],
+    mapLink: "",
   });
   const formRef = useRef(null);
   const [states, setStates] = useState([]);
@@ -67,7 +68,7 @@ const AddNewVilla = () => {
       console.error("Error fetching states:", error);
       toast.error("Failed to fetch states. Please try again.");
       return [];
-    } 
+    }
   };
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -192,6 +193,7 @@ const AddNewVilla = () => {
           description: "",
           coverImage: "",
           images: [],
+          mapLink: "",
         });
         setSelectedState(null);
         setSelectedCity(null);
@@ -199,11 +201,9 @@ const AddNewVilla = () => {
         setSelectedVillaType([]);
         setSelectedAmenities([]);
         setCities([]);
-        // Reset image previews
         setCoverImagePreview(null);
         setVillaImagesPreview([]);
 
-        // Reset input file fields
         document.getElementById("coverImage").value = null;
         document.getElementById("images").value = null;
         formRef.current?.reset();
@@ -407,6 +407,37 @@ const AddNewVilla = () => {
                   ></Select>
                 </div>
               </div>
+              <div className="flex items-center gap-4 w-full">
+                <div className="grid gap-1 w-full">
+                  <label htmlFor="mapLink" className="text-sm font-semibold">
+                    Google Map Link
+                  </label>
+                  <input
+                    type="text"
+                    name="mapLink"
+                    id="mapLink"
+                    onChange={handleChange}
+                    className="border rounded outline-none p-2"
+                    placeholder="Paste Google Maps location link"
+                  />
+                </div>
+                <div className=" grid gap-1 w-full">
+                  <label
+                    htmlFor="availableDate"
+                    className="text-sm font-semibold"
+                  >
+                    Availability Dates{" "}
+                  </label>
+                  <input
+                    type="date"
+                    name="availableDate"
+                    id="availableDate"
+                    onChange={handleChange}
+                    className="border rounded outline-none p-2"
+                    placeholder="select availability date"
+                  />
+                </div>
+              </div>
               <div className=" grid gap-1">
                 <label htmlFor="aminities" className="text-sm font-semibold">
                   Amenities
@@ -427,22 +458,6 @@ const AddNewVilla = () => {
                   }}
                   isMulti
                 ></Select>
-              </div>
-              <div className=" grid gap-1">
-                <label
-                  htmlFor="availableDate"
-                  className="text-sm font-semibold"
-                >
-                  Availability Dates{" "}
-                </label>
-                <input
-                  type="date"
-                  name="availableDate"
-                  id="availableDate"
-                  onChange={handleChange}
-                  className="border rounded outline-none p-2"
-                  placeholder="select availability date"
-                />
               </div>
               <div className=" grid gap-1">
                 <label htmlFor="description" className="text-sm font-semibold">

@@ -24,7 +24,6 @@ const AdminPermission = ({ children }) => {
 
       // Check if user has admin role
       if (!isAdmin(admin.role)) {
-        console.log("User does not have admin role:", admin.role);
         setHasPermission(false);
         setIsLoading(false);
         navigate("/", { replace: true });

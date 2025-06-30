@@ -28,6 +28,10 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+.scrollBar::-webkit-scrollbar {
+  --webkit-scrollbar: none
+}
+
 .hero_section {
   background-image: url(./assets/here_bg.webp);
   background-size: cover;

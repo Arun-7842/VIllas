@@ -26,6 +26,7 @@ const UpdateVillaInfo = ({ close, fetchData, data: villadata }) => {
     description: villadata.description,
     coverImage: villadata.coverImage,
     images: villadata.images,
+    mapLink: villadata.mapLink,
   });
 
   const [loading, setLoading] = useState(false);
@@ -345,6 +346,39 @@ const UpdateVillaInfo = ({ close, fetchData, data: villadata }) => {
                   ></Select>
                 </div>
               </div>
+              <div className="flex flex-col gap-4 w-full ">
+                <div className="grid gap-1 w-full">
+                  <label htmlFor="mapLink" className="text-sm font-semibold">
+                    Google Map Link
+                  </label>
+                  <input
+                    type="text"
+                    name="mapLink"
+                    id="mapLink"
+                    value={data.mapLink}
+                    onChange={handleOnChange}
+                    className="border rounded outline-none p-2"
+                    placeholder="Paste Google Maps location link"
+                  />
+                </div>
+                <div className=" grid gap-1">
+                  <label
+                    htmlFor="availableDate"
+                    className="text-sm font-semibold"
+                  >
+                    Availability Dates{" "}
+                  </label>
+                  <input
+                    type="date"
+                    name="availableDate"
+                    id="availableDate"
+                    value={data.availableDate}
+                    onChange={handleOnChange}
+                    className="border rounded outline-none p-2"
+                    placeholder="select availability date"
+                  />
+                </div>
+              </div>
               <div className=" grid gap-1">
                 <label htmlFor="aminities" className="text-sm font-semibold">
                   Amenities
@@ -366,23 +400,7 @@ const UpdateVillaInfo = ({ close, fetchData, data: villadata }) => {
                   isMulti
                 ></Select>
               </div>
-              <div className=" grid gap-1">
-                <label
-                  htmlFor="availableDate"
-                  className="text-sm font-semibold"
-                >
-                  Availability Dates{" "}
-                </label>
-                <input
-                  type="date"
-                  name="availableDate"
-                  id="availableDate"
-                  value={data.availableDate}
-                  onChange={handleOnChange}
-                  className="border rounded outline-none p-2"
-                  placeholder="select availability date"
-                />
-              </div>
+
               <div className=" grid gap-1">
                 <label htmlFor="description" className="text-sm font-semibold">
                   Discription

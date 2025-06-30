@@ -14,7 +14,7 @@ import {
   FaWalking,
 } from "react-icons/fa";
 import { TbBrandAirbnb } from "react-icons/tb";
-import { IoCallSharp } from "react-icons/io5";
+import { IoCallSharp, IoClose } from "react-icons/io5";
 import {
   FaElevator,
   FaFacebook,
@@ -77,6 +77,7 @@ const Hello = () => {
     FaWalking: <FaWalking size={28} className="text-primary-400" />,
   };
   const [openPopup, setOpenPopup] = useState(false);
+  const [detailsPopup, setDetailsPopup] = useState(false);
   const [wishlist, setWishlist] = useState([]);
   const containerRef = useRef();
   const navigate = useNavigate();
@@ -93,8 +94,6 @@ const Hello = () => {
       if (ResponseData?.success) {
         setVillaData(ResponseData?.data);
       }
-
-      console.log("Fetched Villa Data:", ResponseData?.data);
     } catch (error) {
       console.error("Failed to fetch villas:", error?.message || error);
     }
@@ -173,6 +172,9 @@ const Hello = () => {
   const handleScrollRight = () => {
     containerRef.current.scrollBy({ left: 200, behavior: "smooth" });
   };
+  const handleDetailsPopup = () => {
+    setDetailsPopup(true);
+  };
   return (
     <div>
       <div className="flex flex-col gap-16">
@@ -180,13 +182,13 @@ const Hello = () => {
           <div className="hero_section">
             <div className="flex items-start md:flex-row flex-col md:gap-6 md:px-0 px-6 lg:gap-10 h-full w-full">
               <div className="w-full h-full md:flex flex-col justify-between hidden ">
-                <div className="flex w-full justify-end">
+                <div className="flex w-full justify-start px-20">
                   <div className="flex flex-col gap-4">
                     <p className="text-white text-sm">
                       Find your perfect villa experience — curated and brought
                       to your <br /> screen.
                     </p>
-                    <div className="w-20 h-2 bg-secondary-200"></div>
+                    {/* <div className="w-20 h-2 bg-secondary-200"></div> */}
                   </div>
                 </div>
                 <div>
@@ -195,11 +197,11 @@ const Hello = () => {
               </div>
               <div className="w-full flex flex-col gap-8">
                 <div>
-                  <div>
-                    <h1 className="text-[54px] lg:text-[64px] font-bold text-white">
+                  <div className="flex flex-col gap-0">
+                    <h1 className="text-[54px] lg:text-[64px] leading-snug font-bold text-white">
                       LONAVALA
                     </h1>
-                    <h1 className="text-[54px] lg:text-[64px] font-bold text-white">
+                    <h1 className="text-[54px] lg:text-[64px] leading-snug font-bold text-white">
                       STAY-VILLA
                     </h1>
                   </div>
@@ -307,7 +309,7 @@ const Hello = () => {
               <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
                 {cardData.map((card, i) => (
                   <div
-                    kay={i}
+                    key={card._id || i}
                     className="flex flex-col gap-2 bg-white rounded p-4"
                   >
                     <div className="w-[100%] object-cover relative">
@@ -498,7 +500,10 @@ const Hello = () => {
                         <h4 className="text-lg">2 Bathrooms</h4>
                       </div>
                     </div>
-                    <button className="w-fit py-2 px-6 rounded-full bg-cyan-400 text-sm font-bold text-black hover:bg-cyan-300 transition">
+                    <button
+                      onClick={handleDetailsPopup}
+                      className="w-fit py-2 px-6 rounded-full bg-cyan-400 text-sm font-bold text-black hover:bg-cyan-300 transition"
+                    >
                       Go to Details
                     </button>
                   </div>
@@ -534,7 +539,7 @@ const Hello = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {whySection.map((why, i) => (
                 <div
-                  kay={i}
+                  key={why.label || i}
                   className="bg-white py-6 px-8 flex flex-col items-center text-center gap-2 rounded-[16px]"
                 >
                   <img src={why.image} alt={why.label} className="w-16" />
@@ -578,6 +583,50 @@ const Hello = () => {
           </div>
         </section>
       </div>
+      {detailsPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl shadow-lg p-6 md:p-8 flex flex-col gap-4">
+            <div className="flex justify-end">
+              <button
+                onClick={() => setDetailsPopup(false)}
+                className="text-gray-500 hover:text-black"
+              >
+                <IoClose size={24} />
+              </button>
+            </div>
+            <h2 className="text-2xl font-bold text-primary-500">
+              Welcome to Lonavala Stay Villas
+            </h2>
+            <p className="text-gray-600">
+              Discover luxury, comfort, and convenience at one place. Our
+              platform helps you find handpicked villas in Lonavala with premium
+              amenities, scenic views, and hassle-free booking.
+            </p>
+            <ul className="list-disc pl-5 space-y-2 text-gray-700">
+              <li>🏠 Verified luxury villas listed</li>
+              <li>📍 Easy location-based filtering</li>
+              <li>📞 Instant booking support</li>
+              <li>💰 Best price guarantee & exclusive discounts</li>
+              <li>🔒 Secure, trustworthy, and fast</li>
+            </ul>
+
+            <p className="text-sm text-gray-500">
+              Our mission is to simplify your holiday planning and give you a
+              memorable stay experience in the heart of Lonavala.
+            </p>
+
+            <div className="text-right">
+              <button
+                onClick={() => setDetailsPopup(false)}
+                className="bg-primary-400 text-white px-6 py-2 rounded-full hover:bg-primary-600 transition"
+              >
+                Let's Explore
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="fixed top-1/2 right-0 flex flex-col gap-2">
         <div className="flex flex-col gap-2">
           <a

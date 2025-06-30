@@ -68,6 +68,10 @@ const categorySchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    mapLink: {
+      type: String,
+      default: "",
+    },
     // review: [
     //   {
     //     name:{ type: String, required: true },

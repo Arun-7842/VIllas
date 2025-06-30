@@ -28,7 +28,7 @@ const BookingBar = ({
           <div className="flex flex-col gap-1 text-sm">
             <span className="opacity-80">Location</span>
             <select
-              value={bookingParams.cities}
+              value={bookingParams.cities || ""}
               onChange={(e) =>
                 setBookingParams((prev) => ({
                   ...prev,
@@ -97,7 +97,6 @@ const BookingBar = ({
                 }))
               }
               className="bg-transparent outline-none text-white "
-              defaultValue="2023-03-09"
             />
           </div>
         </div>
@@ -116,7 +115,6 @@ const BookingBar = ({
                 }))
               }
               className="bg-transparent outline-none text-white"
-              defaultValue="2023-03-13"
             />
           </div>
         </div>

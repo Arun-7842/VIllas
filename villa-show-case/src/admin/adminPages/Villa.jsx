@@ -87,8 +87,6 @@ const Villa = () => {
       if (ResponseData.success) {
         setVillaData(ResponseData.data);
       }
-
-      console.log("Fetched Villa Data:", ResponseData.data);
     } catch (error) {
       console.error("Failed to fetch villas:", error.message || error);
     }

@@ -19,6 +19,7 @@ export const AddVillaShowCase = async (req, res) => {
       availableDate,
       coverImage,
       images,
+      mapLink,
     } = req.body;
     const villaShowCase = new VillaShowCase({
       villaTitle,
@@ -36,6 +37,7 @@ export const AddVillaShowCase = async (req, res) => {
       availableDate,
       images,
       coverImage,
+      mapLink,
     });
     const saveVillaShowCase = await villaShowCase.save();
     return res.status(200).json({
