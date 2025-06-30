@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import heroImage from "../assets/here-imge.webp";
-import SummaryApi from "../common/SummaryApi";
-import Axios from "../utils/Axios";
+import SummaryApi from "../common/SummaryApi.js";
+import Axios from "../utils/Axios.js";
 import {
   FaSwimmingPool,
   FaDumbbell,
@@ -32,9 +32,9 @@ import {
   MdChildCare,
   MdDeck,
 } from "react-icons/md";
-import BookingBar from "../components/BookingBar";
-import BookingForm from "../components/BookingForm";
-import { cardData, whySection } from "../store/Dropdown";
+import BookingBar from "../components/BookingBar.jsx";
+import BookingForm from "../components/BookingForm.jsx";
+import { cardData, whySection } from "../store/Dropdown.jsx";
 import { useNavigate } from "react-router-dom";
 import why_choose from "../assets/why_main.png";
 import AnimatedTestimonialsDemo from "../components/AnimatedTestimonialsDemo.jsx";

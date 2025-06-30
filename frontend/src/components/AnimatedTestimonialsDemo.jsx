@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Axios from "../utils/Axios";
 import SummaryApi from "../common/SummaryApi";
-import { AnimatedTestimonials } from "../components/ui/animated-testimonials";
+import { AnimatedTestimonials } from "./ui/animated-testimonials";
 
 const AnimatedTestimonialsDemo = () => {
   const [testimonials, setTestimonials] = useState([]);
