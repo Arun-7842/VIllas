@@ -24,10 +24,9 @@ const auth = async (req, res, next) => {
       });
     }
 
-    // ✅ Attach user to request
     req.user = {
       _id: decoded.id,
-      role: decoded.role, // optional if using role-based logic
+      role: decoded.role,
     };
 
     next();

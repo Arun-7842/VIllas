@@ -18,7 +18,6 @@ villaShowCaseRouter.delete(
   "/delete/:id",
   villaShowcaseController.deleteVillaController
 );
-
 villaShowCaseRouter.post(
   "/add-review-to-villa/:id",
   auth,

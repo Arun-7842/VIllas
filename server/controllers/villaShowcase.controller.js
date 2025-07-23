@@ -155,7 +155,7 @@ export const addReviewToVilla = async (req, res) => {
   try {
     const { id } = req.params;
     const { review, message } = req.body;
-    const userId = req.user?._id; 
+    const userId = req.user?._id;
 
     if (!userId) {
       return res.status(401).json({
@@ -165,7 +165,9 @@ export const addReviewToVilla = async (req, res) => {
       });
     }
 
+    console.log("villa id", id);
     const villa = await VillaShowCase.findById(id);
+    console.log("villa id ivlla", villa);
     if (!villa) {
       return res.status(404).json({
         message: "Villa not found",

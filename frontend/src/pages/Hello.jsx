@@ -115,7 +115,7 @@ const Hello = () => {
   const navigate = useNavigate();
   const handleOpenBooking = () => setOpenPopup(true);
   const user = JSON.parse(localStorage.getItem("user"));
-
+  const token = localStorage.getItem("accessToken");
   const villafet = async () => {
     try {
       const response = await Axios({
@@ -136,6 +136,7 @@ const Hello = () => {
   const getUserIdFromStorage = () => {
     try {
       const userString = localStorage.getItem("user");
+
       if (!userString) return null;
 
       const parsed = JSON.parse(userString);
@@ -211,6 +212,7 @@ const Hello = () => {
         method: SummaryApi.addReview.method,
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           review: rating,
