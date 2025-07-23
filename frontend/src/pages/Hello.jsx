@@ -41,6 +41,33 @@ import AnimatedTestimonialsDemo from "../components/AnimatedTestimonialsDemo.jsx
 import villaSub from "../assets/sub-section.png";
 import { FaRegHeart, FaHeart, FaWhatsapp, FaAngleRight } from "react-icons/fa";
 import toast from "react-hot-toast";
+const getAverageRating = (reviews) => {
+  const approvedReviews = reviews.filter((r) => r.isApproved);
+  if (approvedReviews.length === 0) return 0;
+  const total = approvedReviews.reduce((acc, curr) => acc + curr.rating, 0);
+  return total / approvedReviews.length;
+};
+const renderStars = (avg) => {
+  const fullStars = Math.floor(avg);
+  const hasHalfStar = avg - fullStars >= 0.5;
+  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+  return (
+    <>
+      {[...Array(fullStars)].map((_, i) => (
+        <span key={`full-${i}`} className="text-yellow-500 text-xl">
+          ★
+        </span>
+      ))}
+      {hasHalfStar && <span className="text-yellow-500  text-xl">☆</span>}
+      {[...Array(emptyStars)].map((_, i) => (
+        <span key={`empty-${i}`} className="text-gray-400 text-xl">
+          ★
+        </span>
+      ))}
+    </>
+  );
+};
 const Hello = () => {
   const [villadata, setVillaData] = useState([]);
   const [bookingParams, setBookingParams] = useState({
@@ -79,6 +106,11 @@ const Hello = () => {
   const [openPopup, setOpenPopup] = useState(false);
   const [detailsPopup, setDetailsPopup] = useState(false);
   const [wishlist, setWishlist] = useState([]);
+  const [selectedVilla, setSelectedVilla] = useState(null);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewText, setReviewText] = useState("");
+  const [rating, setRating] = useState(0);
+  const [loading, setLoading] = useState(false);
   const containerRef = useRef();
   const navigate = useNavigate();
   const handleOpenBooking = () => setOpenPopup(true);
@@ -164,6 +196,43 @@ const Hello = () => {
     } catch (err) {
       console.error("Wishlist toggle error:", err);
       toast.error("Something went wrong");
+    }
+  };
+  const handleReviewSubmit = async () => {
+    if (!rating || !reviewText) {
+      return alert("Please provide both rating and review text.");
+    }
+
+    setLoading(true);
+    try {
+      const apiUrl = SummaryApi.addReview.url.replace(":id", selectedVilla._id);
+
+      const response = await fetch(apiUrl, {
+        method: SummaryApi.addReview.method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          review: rating,
+          message: reviewText,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success(
+          "Review submitted successfully! Your review is awaiting admin approval."
+        );
+        setShowReviewModal(false);
+      } else {
+        toast.error(data.message || "Failed to submit review.");
+      }
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      toast.error("Something went wrong while submitting the review.");
+    } finally {
+      setLoading(false);
     }
   };
   const handleScrollLeft = () => {
@@ -336,7 +405,6 @@ const Hello = () => {
             </h6>
             <h2 className="text-3xl font-bold text-primary-400">Our Villas</h2>
           </div>
-
           {villadata.length === 0 ? (
             <p>No villas available to display.</p>
           ) : (
@@ -374,12 +442,45 @@ const Hello = () => {
                           )}
                         </button>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <strong>Avalable on :</strong>
-                        <h4 className="text-green-700 text-md font-semibold">
-                          {" "}
-                          {villa.availableDate}
-                        </h4>
+                      <div>
+                        <div>
+                          <div>
+                            <div className="flex flex-col lg:flex-row lg:items-center  gap-2">
+                              <div>
+                                {renderStars(getAverageRating(villa.review))}
+                                <span className="text-sm text-gray-600">
+                                  (
+                                  {
+                                    villa.review.filter((r) => r.isApproved)
+                                      .length
+                                  }{" "}
+                                  <span>Reviews</span>)
+                                </span>
+                              </div>
+                              <div>
+                                <button
+                                  className="text-sm text-blue-600 underline"
+                                  onClick={() => {
+                                    setSelectedVilla(villa);
+                                    setShowReviewModal(true);
+                                    setReviewText("");
+                                    setRating(0);
+                                  }}
+                                >
+                                  Add / View Review
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <strong>Avalable on :</strong>
+                          <h4 className="text-green-700 text-md font-semibold">
+                            {" "}
+                            {villa.availableDate}
+                          </h4>
+                        </div>
                       </div>
                     </div>
                     <div className="w-full flex flex-col gap-2 md:gap-4">
@@ -455,6 +556,82 @@ const Hello = () => {
                 >
                   <IoIosArrowForward size={24} />
                 </button>
+              </div>
+            </div>
+          )}
+          {showReviewModal && selectedVilla && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+              <div className="bg-white p-6 rounded-md w-full max-w-[22rem] md:max-w-[40rem] lg:max-w-[47rem] shadow-lg relative">
+                <button
+                  className="absolute top-2 right-2 text-gray-600"
+                  onClick={() => setShowReviewModal(false)}
+                >
+                  ✖
+                </button>
+                <div className="flex flex-col md:flex-row items-start gap-8">
+                  {/* Add Review Form */}
+                  <div className="space-y-3 w-full">
+                    <h3 className="font-semibold">Write a Review:</h3>
+
+                    <div className="flex gap-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <span
+                          key={star}
+                          onClick={() => setRating(star)}
+                          className={`cursor-pointer text-2xl ${
+                            star <= rating ? "text-yellow-500" : "text-gray-300"
+                          }`}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+
+                    <textarea
+                      rows={3}
+                      value={reviewText}
+                      onChange={(e) => setReviewText(e.target.value)}
+                      placeholder="Write your review..."
+                      className="w-full border p-2 rounded"
+                    ></textarea>
+                    <div className="flex justify-end">
+                      <button
+                        disabled={loading}
+                        onClick={() => {
+                          if (!user) {
+                            navigate("/login");
+                          } else {
+                            handleReviewSubmit();
+                          }
+                        }}
+                        className="bg-primary-400 text-white px-4 py-2 rounded hover:bg-primary-500"
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                  <div className="w-full">
+                    <h2 className="text-md font-semibold mb-4">
+                      Reviews for {selectedVilla.villaTitle}
+                    </h2>
+                    {/* Display Approved Reviews */}
+                    <div className="max-h-52 overflow-y-auto mb-4">
+                      {selectedVilla.review
+                        .filter((r) => r.isApproved)
+                        .map((r) => (
+                          <div key={r._id} className="border-b py-2">
+                            <div className="flex items-center gap-2">
+                              {renderStars(r.rating)}
+                              <span className="text-gray-500 text-sm">
+                                ({new Date(r.createdAt).toLocaleDateString()})
+                              </span>
+                            </div>
+                            <p className="text-gray-700">{r.message}</p>
+                          </div>
+                        ))}
+                    </div>
+                  </div>{" "}
+                </div>
               </div>
             </div>
           )}
@@ -626,7 +803,6 @@ const Hello = () => {
           </div>
         </div>
       )}
-
       <div className="fixed top-1/2 right-0 flex flex-col gap-2">
         <div className="flex flex-col gap-2">
           <a

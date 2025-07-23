@@ -23,6 +23,7 @@ import About from "../components/About";
 import Services from "../components/Services";
 import OtpVerification from "../components/OtpVerification";
 import ResetPassword from "../components/ResetPassword";
+import ReviewCheckApprove from "../admin/adminPages/ReviewCheckApprove";
 
 const router = createBrowserRouter([
   {
@@ -108,6 +109,10 @@ const router = createBrowserRouter([
           {
             path: "booking",
             element: <Bookings />,
+          },
+          {
+            path: "Reviews",
+            element: <ReviewCheckApprove />,
           },
         ],
       },

@@ -223,7 +223,7 @@ export const getAdminDashboardSummaryController = async (req, res) => {
         villas: monthVillas,
         users: monthUsers,
         bookings: monthBookings,
-        revenue: monthBookings * 1500, 
+        revenue: monthBookings * 1500,
         date: startDate,
       });
     }
@@ -270,137 +270,113 @@ export const getAdminDashboardSummaryController = async (req, res) => {
     });
   }
 };
-// export const getAdminDashboardSummaryController = async (req, res) => {
-//   try {
-//     const totalVillas = await VillaShowCase.countDocuments();
-//     const totalUser = await userModel.countDocuments();
 
-//     return res.status(200).json({
-//       success: true,
-//       error: false,
-//       data: {
-//         totalVillas,
-//         totalUser,
-//       },
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       message: error.message || error,
-//       error: true,
-//       success: false,
-//     });
-//   }
-// };
-// export const getAdminDashboardSummaryController = async (req, res) => {
-//   try {
-//     // Basic counts
-//     const totalVillas = await VillaShowCase.countDocuments();
-//     const totalUsers = await userModel.countDocuments();
+export const getPendingReviews = async (req, res) => {
+  try {
+    const villas = await VillaShowCase.find({
+      "review.isApproved": false,
+    });
 
-//     // Additional analytics data
-//     const currentDate = new Date();
-//     const sixMonthsAgo = new Date();
-//     sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
+    const pendingReviews = villas.flatMap((villa) =>
+      villa.review
+        .filter((r) => !r.isApproved)
+        .map((r) => ({
+          ...r.toObject(),
+          villaId: villa._id,
+          villaTitle: villa.villaTitle,
+        }))
+    );
 
-//     // Monthly data for charts (last 6 months)
-//     const monthlyData = [];
-//     for (let i = 5; i >= 0; i--) {
-//       const startDate = new Date();
-//       startDate.setMonth(currentDate.getMonth() - i);
-//       startDate.setDate(1);
-//       startDate.setHours(0, 0, 0, 0);
+    return res.status(200).json({
+      message: "Pending reviews fetched successfully",
+      data: pendingReviews,
+      success: true,
+      error: false,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+export const approveReview = async (req, res) => {
+  try {
+    const { villaId, reviewId } = req.params;
 
-//       const endDate = new Date();
-//       endDate.setMonth(currentDate.getMonth() - i + 1);
-//       endDate.setDate(0);
-//       endDate.setHours(23, 59, 59, 999);
+    const villa = await VillaShowCase.findById(villaId);
+    if (!villa) {
+      return res.status(404).json({
+        message: "Villa not found",
+        error: true,
+        success: false,
+      });
+    }
 
-//       const monthVillas = await VillaShowCase.countDocuments({
-//         createdAt: { $gte: startDate, $lte: endDate },
-//       });
+    const review = villa.review.id(reviewId);
+    if (!review) {
+      return res.status(404).json({
+        message: "Review not found",
+        error: true,
+        success: false,
+      });
+    }
 
-//       const monthUsers = await userModel.countDocuments({
-//         createdAt: { $gte: startDate, $lte: endDate },
-//       });
+    review.isApproved = true;
+    await villa.save();
+    console.log("villathis side", villa);
+    return res.status(200).json({
+      message: "Review approved successfully",
+      success: true,
+      error: false,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+export const rejectReview = async (req, res) => {
+  try {
+    const { villaId, reviewId } = req.params;
 
-//       monthlyData.push({
-//         month: startDate.toLocaleDateString("en-US", { month: "short" }),
-//         villas: monthVillas,
-//         users: monthUsers,
-//         date: startDate,
-//       });
-//     }
+    const villa = await VillaShowCase.findById(villaId);
+    if (!villa) {
+      return res.status(404).json({
+        message: "Villa not found",
+        error: true,
+        success: false,
+      });
+    }
 
-//     // Recent activity (last 30 days)
-//     const thirtyDaysAgo = new Date();
-//     thirtyDaysAgo.setDate(currentDate.getDate() - 30);
+    const review = villa.review.id(reviewId);
+    if (!review) {
+      return res.status(404).json({
+        message: "Review not found",
+        error: true,
+        success: false,
+      });
+    }
 
-//     const recentVillas = await VillaShowCase.countDocuments({
-//       createdAt: { $gte: thirtyDaysAgo },
-//     });
+    // Remove the review (reject it)
+    villa.review.pull(reviewId);
+    await villa.save();
 
-//     const recentUsers = await userModel.countDocuments({
-//       createdAt: { $gte: thirtyDaysAgo },
-//     });
+    return res.status(200).json({
+      message: "Review rejected and removed successfully",
+      success: true,
+      error: false,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
 
-//     // Calculate growth rate
-//     const previousMonthVillas = await VillaShowCase.countDocuments({
-//       createdAt: {
-//         $gte: new Date(thirtyDaysAgo.getTime() - 30 * 24 * 60 * 60 * 1000),
-//         $lt: thirtyDaysAgo,
-//       },
-//     });
 
-//     const growthRate =
-//       previousMonthVillas > 0
-//         ? (
-//             ((recentVillas - previousMonthVillas) / previousMonthVillas) *
-//             100
-//           ).toFixed(1)
-//         : 0;
-
-//     // Villa types distribution (optional - if you have villa types)
-//     const villaTypeDistribution = await VillaShowCase.aggregate([
-//       {
-//         $group: {
-//           _id: "$villaType",
-//           count: { $sum: 1 },
-//         },
-//       },
-//       {
-//         $sort: { count: -1 },
-//       },
-//     ]);
-
-//     // Mock revenue calculation (replace with your actual booking/payment model)
-//     const totalRevenue = totalVillas * 1500; // Assuming average revenue per villa
-
-//     return res.status(200).json({
-//       success: true,
-//       error: false,
-//       data: {
-//         totalVillas,
-//         totalUsers,
-//         recentVillas,
-//         recentUsers,
-//         growthRate,
-//         totalRevenue,
-//         monthlyData,
-//         villaTypeDistribution,
-//         summary: {
-//           totalVillas,
-//           totalUsers,
-//           growthRate: `+${growthRate}%`,
-//           totalRevenue: `$${totalRevenue.toLocaleString()}`,
-//         },
-//       },
-//     });
-//   } catch (error) {
-//     console.error("Dashboard Summary Error:", error);
-//     return res.status(500).json({
-//       message: error.message || error,
-//       error: true,
-//       success: false,
-//     });
-//   }
-// };

@@ -7,6 +7,7 @@ const EditTestimonialForm = ({ initialData, onClose, onSuccess }) => {
     name: initialData.name,
     designation: initialData.designation,
     quote: initialData.quote,
+    videoUrl: initialData.videoUrl,
     imageUrl: null,
   });
 
@@ -25,9 +26,14 @@ const EditTestimonialForm = ({ initialData, onClose, onSuccess }) => {
   };
 
   const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file && !file.type.startsWith("image/")) {
+      toast.error("Please upload a valid image.");
+      return;
+    }
     setFormData((prev) => ({
       ...prev,
-      imageUrl: e.target.files[0],
+      imageUrl: file,
     }));
   };
 
@@ -39,6 +45,7 @@ const EditTestimonialForm = ({ initialData, onClose, onSuccess }) => {
     data.append("name", formData.name);
     data.append("designation", formData.designation);
     data.append("quote", formData.quote);
+    data.append("videoUrl", formData.videoUrl);
     if (formData.imageUrl) {
       data.append("imageUrl", formData.imageUrl);
     }
@@ -98,6 +105,13 @@ const EditTestimonialForm = ({ initialData, onClose, onSuccess }) => {
             </span>
           </div>
           <input type="file" name="imageUrl" onChange={handleImageChange} />
+          <input
+            type="text"
+            name="videoUrl"
+            value={formData.videoUrl}
+            className="w-full border p-2 rounded"
+            onChange={handleChange}
+          />
           <button
             type="submit"
             disabled={loading}

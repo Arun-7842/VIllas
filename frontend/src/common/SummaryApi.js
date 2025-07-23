@@ -6,6 +6,10 @@ const SummaryApi = {
     url: "/api/villaShowCase/add-villa-show-case",
     method: "POST",
   },
+  addReview: {
+    url: "/api/villaShowCase/add-review-to-villa/:id",
+    method: "POST",
+  },
   getVilla: {
     url: "/api/villaShowCase/get",
     method: "GET",
@@ -45,6 +49,19 @@ const SummaryApi = {
   uplodImage: {
     url: "/api/file/upload",
     method: "post",
+  },
+
+  pendingReviews: {
+    url: "/api/admin/pending-reviews",
+    method: "get",
+  },
+  approveReview: {
+    url: "/api/admin/approve-review/:villaId/:reviewId",
+    method: "post",
+  },
+  rejectReview: {
+    url: "/api/admin/reject/:villaId/:reviewId",
+    method: "delete",
   },
   //testimonials
 

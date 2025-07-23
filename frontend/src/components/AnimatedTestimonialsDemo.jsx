@@ -13,13 +13,17 @@ const AnimatedTestimonialsDemo = () => {
         const formattedData = (response.data.data || [])
           .filter(
             (item) =>
-              item?.name && item?.quote && item?.designation && item?.imageUrl
+              item?.name &&
+              item?.quote &&
+              item?.designation &&
+              (item?.imageUrl || item?.videoUrl)
           )
           .map((item) => ({
             quote: item.quote,
             name: item.name,
             designation: item.designation,
-            src: item.imageUrl,
+            src: item.imageUrl || "",
+            videoUrl: item.videoUrl || "",
           }));
         setTestimonials(formattedData);
       }

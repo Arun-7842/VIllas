@@ -49,7 +49,10 @@ const ShowTestimonials = () => {
   useEffect(() => {
     fetchTestimonials();
   }, []);
-
+  const getEmbedUrl = (url) => {
+    const match = url.match(/\/d\/([^/]+)\//);
+    return match ? `https://drive.google.com/file/d/${match[1]}/preview` : url;
+  };
   if (loading)
     return <p className="text-center mt-10">Loading testimonials...</p>;
 
@@ -64,11 +67,21 @@ const ShowTestimonials = () => {
             key={item._id}
             className="bg-white rounded-xl shadow p-4 relative"
           >
-            <img
-              src={item.imageUrl}
-              alt={item.name}
-              className="w-20 h-20 rounded-full object-cover mx-auto mb-4"
-            />
+            {item.imageUrl ? (
+              <img
+                src={item?.imageUrl}
+                alt={item.name}
+                className="w-full h-40 rounded-sm object-scale-down object-top mx-auto mb-4"
+              />
+            ) : item.videoUrl ? (
+              <iframe
+                className="w-full h-40"
+                src={getEmbedUrl(item?.videoUrl)}
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+                title="Testimonial Video"
+              />
+            ) : null}
             <h3 className="text-lg font-semibold text-center">{item.name}</h3>
             <p className="text-sm text-center text-gray-500">
               {item.designation}

@@ -3,7 +3,7 @@ import uploadVillaImageCloadinary from "../utils/uploadVillaImg.js";
 
 export const testimonialController = async (req, res) => {
   try {
-    const { name, designation, quote } = req.body;
+    const { name, designation, quote, videoUrl } = req.body;
 
     if (!name || !designation || !quote) {
       return res.status(400).json({
@@ -24,6 +24,7 @@ export const testimonialController = async (req, res) => {
       designation,
       quote,
       imageUrl,
+      videoUrl: videoUrl || "",
     });
 
     return res.status(200).json({
@@ -62,7 +63,7 @@ export const updateTestimonial = async (req, res) => {
     const { id } = req.params;
 
     // Use req.body (fields from form-data)
-    const { name, designation, quote } = req.body;
+    const { name, designation, quote, videoUrl } = req.body;
 
     let imageUrl = req.body.imageUrl;
     if (req.file) {
@@ -72,7 +73,7 @@ export const updateTestimonial = async (req, res) => {
 
     const updatedTestimonial = await testimonialModel.findByIdAndUpdate(
       id,
-      { name, designation, quote, imageUrl },
+      { name, designation, quote, imageUrl, videoUrl },
       { new: true, runValidators: true }
     );
 

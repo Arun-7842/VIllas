@@ -9,7 +9,6 @@ const testimonialSchema = new mongoose.Schema(
     },
     imageUrl: {
       type: String,
-      required: true,
     },
     quote: {
       type: String,
@@ -20,6 +19,10 @@ const testimonialSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+    },
+    videoUrl: {
+      type: String, 
+      default: "", 
     },
     createdAt: {
       type: Date,

@@ -35,7 +35,10 @@ export const AnimatedTestimonials = ({ testimonials, autoplay = false }) => {
       </div>
     );
   }
-
+  const getEmbedUrl = (url) => {
+    const match = url.match(/\/d\/([^/]+)\//);
+    return match ? `https://drive.google.com/file/d/${match[1]}/preview` : url;
+  };
   const randomRotateY = () => {
     return Math.floor(Math.random() * 21) - 10;
   };
@@ -76,14 +79,24 @@ export const AnimatedTestimonials = ({ testimonials, autoplay = false }) => {
                   }}
                   className="absolute inset-0 origin-bottom"
                 >
-                  <img
-                    src={testimonial.src}
-                    alt={testimonial.name}
-                    width={500}
-                    height={500}
-                    draggable={false}
-                    className="h-full w-full rounded-3xl object-cover object-center"
-                  />
+                  {testimonial.videoUrl ? (
+                    <iframe
+                      src={getEmbedUrl(testimonial.videoUrl)}
+                      allow="autoplay; encrypted-media"
+                      allowFullScreen
+                      title="Testimonial Video"
+                      className="h-full w-full rounded-3xl object-cover"
+                    />
+                  ) : (
+                    <img
+                      src={testimonial.src}
+                      alt={testimonial.name}
+                      width={500}
+                      height={500}
+                      draggable={false}
+                      className="h-full w-full rounded-3xl object-cover object-center"
+                    />
+                  )}
                 </motion.div>
               ))}
             </AnimatePresence>

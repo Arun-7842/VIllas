@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as villaShowcaseController from "../controllers/villaShowcase.controller.js";
+import auth from "../middleware/auth.js";
 
 const villaShowCaseRouter = Router();
 
@@ -16,6 +17,12 @@ villaShowCaseRouter.put(
 villaShowCaseRouter.delete(
   "/delete/:id",
   villaShowcaseController.deleteVillaController
+);
+
+villaShowCaseRouter.post(
+  "/add-review-to-villa/:id",
+  auth,
+  villaShowcaseController.addReviewToVilla
 );
 
 export default villaShowCaseRouter;

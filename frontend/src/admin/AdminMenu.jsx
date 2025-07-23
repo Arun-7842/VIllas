@@ -8,6 +8,8 @@ import {
   MdAddCircle,
   MdBookmarkAdd,
   MdAddPhotoAlternate,
+  MdFeed,
+  MdRateReview,
 } from "react-icons/md";
 import Axios from "../utils/Axios";
 import { IoTicket, IoLogOutSharp } from "react-icons/io5";
@@ -44,9 +46,14 @@ const AdminMenu = () => {
       name: "Add Testimonials",
     },
     {
-      icon: <MdAddPhotoAlternate size={24} />,
+      icon: <MdFeed size={24} />,
       path: "/dashboard/testimonials",
       name: "Testimonials",
+    },
+    {
+      icon: <MdRateReview size={24} />,
+      path: "/dashboard/Reviews",
+      name: "Reviews",
     },
   ];
 
