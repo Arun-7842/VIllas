@@ -24,9 +24,9 @@ const app = express();
 //   })
 // );
 const corsOptions = {
-  // origin: ["https://lonavalastayvilla.in", "https://www.lonavalastayvilla.in"],
+  origin: ["https://lonavalastayvilla.in", "https://www.lonavalastayvilla.in"],
 
-  origin: process.env.FRONTEND_URL,
+  // origin: process.env.FRONTEND_URL,
   credentials: true,
 
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
