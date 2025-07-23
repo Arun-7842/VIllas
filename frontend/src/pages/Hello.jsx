@@ -210,9 +210,9 @@ const Hello = () => {
 
       const response = await fetch(apiUrl, {
         method: SummaryApi.addReview.method,
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           review: rating,
@@ -355,7 +355,7 @@ const Hello = () => {
                       href={`/VillaDetails/${villadata[0]._id}`}
                       className="w-fit bg-secondary-200 py-2 px-4 rounded-full text-sm font-semibold"
                     >
-                      Learn Mote
+                      Learn More
                     </a>
                   </div>
                 </div>
